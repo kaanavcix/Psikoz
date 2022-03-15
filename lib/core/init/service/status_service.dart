@@ -1,0 +1,268 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:psikoz_me/Message/view/model/chatModel.dart';
+import 'package:psikoz_me/Search/controller/searchController.dart';
+import 'package:psikoz_me/core/init/service/authController.dart';
+import 'package:psikoz_me/newPost/view/models/addmodel.dart';
+import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:psikoz_me/core/init/service/stroage_service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
+import 'package:psikoz_me/newPost/view/models/commentModel.dart';
+
+class StatusService extends GetxController {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final _storageService = Get.put(StroageService(), permanent: true);
+  final autService = Get.put(AuthService(), permanent: true);
+  final searchController = Get.put(SearchController());
+
+  late CollectionReference collectionreference;
+  late CollectionReference collectionreferenceComment;
+  final firebaseUser = FirebaseAuth.instance.currentUser;
+  var myFallow = [].obs;
+  var myUsername = " ".obs;
+  var myUserAvatar = "".obs;
+
+  RxList<Post2> post4 = RxList<Post2>([]);
+  RxList<Post3> post5 = RxList<Post3>([]);
+  RxList<Post2> post6 = RxList<Post2>([]);
+  RxList<Comment> comment = RxList<Comment>([]);
+  List<MessageModel> message = ([]);
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    collectionreference = firestore.collection("Status");
+    collectionreferenceComment = firestore
+        .collection("Status")
+        .doc(collectionreference.id)
+        .collection("comment");
+    post4.bindStream(getAllPost());
+    post5.bindStream(getCustomPost());
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    post5.bindStream(getCustomPost());
+  }
+
+//veri ekleme resimle
+  Future<Post2> addPost(
+    String title,
+    XFile pickedImage,
+    String username,
+    String time,
+    String profileurl,
+    String tag,
+    int likeCounter,
+  ) async {
+    var _mediaUrl = await _storageService.uploadMedia(File(pickedImage.path));
+    // ignore: prefer_conditional_assignment, unnecessary_null_comparison
+    if (_mediaUrl == null) {
+      _mediaUrl = "";
+    }
+    var documentRef = await collectionreference.add({
+      "PostText": title,
+      "image": _mediaUrl,
+      "username": username,
+      "time": time,
+      "profileurl": profileurl,
+      "tag": tag,
+      "likeCounter": likeCounter,
+      "likes": []
+    });
+
+    return Post2(
+        DocId: documentRef.id,
+        PostText: title,
+        image: _mediaUrl,
+        username: username,
+        time: time,
+        profileurl: profileurl,
+        tag: tag,
+        likeCounter: likeCounter,
+        likes: []);
+  }
+
+  // sadece text
+  Future<Post2> addText(
+    String title,
+    String username,
+    String time,
+    String profileurl,
+    String tag,
+    int likeCounter,
+  ) async {
+    var documentRef = await collectionreference.add({
+      "PostText": title,
+      "image": "",
+      "username": username,
+      "time": time,
+      "profileurl": profileurl,
+      "tag": tag,
+      "likeCounter": likeCounter,
+      "likes": []
+    });
+    return Post2(
+        DocId: documentRef.id,
+        PostText: title,
+        image: "",
+        username: username,
+        time: time,
+        profileurl: profileurl,
+        tag: tag,
+        likeCounter: likeCounter,
+        likes: []);
+  }
+
+//veri çekme
+  Stream<List<Post2>> getAllPost() {
+    var ref = collectionreference
+        .orderBy("time", descending: true)
+        .snapshots()
+        .map((event) => event.docs.map((data) => Post2.fromMap(data)).toList());
+
+    return ref;
+  }
+
+  Stream<List<Post3>> getCustomPost() {
+    var customData = collectionreference
+        .where("username",
+            isEqualTo: autService.myUsername.value) //bakalım buna
+        .snapshots()
+        .map((event) => event.docs.map((e) => Post3.fromMap(e)).toList());
+
+    return customData;
+  }
+
+  //veri silme
+  Future<void> deleteData(String docId) async {
+    var ref = await collectionreference.doc(docId).delete();
+    return ref;
+  }
+
+  Future<UserCredential?> getUserCurrentData() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser != null) {
+      firestore
+          .collection("Person")
+          .doc(firebaseUser.uid)
+          .snapshots()
+          .listen((ds4) {
+        myUsername.value = ds4.data()!["username"];
+        myUserAvatar.value = ds4.data()!["Image"] ?? " ";
+        myFallow.value = ds4.data()!["Fallow"] ?? 0;
+      });
+      /*  .get()
+          .then((ds4) {
+        myUsername.value = ds4.data()!["username"];
+        myUserAvatar.value = ds4.data()!["Image"] ?? " ";
+        myFallow.value = ds4.data()!["Fallow"] ?? 0;
+      }); */
+
+    }
+    return null;
+  }
+
+// post liked
+  Future<String>? likePost(String postId, String uid, List likes) {
+    // ignore: prefer_typing_uninitialized_variables, unused_local_variable
+    var res;
+    try {
+      if (likes.contains(uid)) {
+        collectionreference.doc(postId).update({
+          "likes": FieldValue.arrayRemove([uid])
+        });
+      } else {
+        // else we need to add uid to the likes array
+        collectionreference.doc(postId).update({
+          'likes': FieldValue.arrayUnion([uid])
+        });
+      }
+      res = 'success';
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
+// yorum atma
+  Future<String>? postComment(String postId, String title, String username,
+      String uid, String profilePicture) async {
+    var commentId = const Uuid().v1();
+    if (title.isNotEmpty) {
+      await collectionreference
+          .doc(postId)
+          .collection("comment")
+          .doc(commentId)
+          .set({
+        "profilePicture": profilePicture,
+        "title": title,
+        "username": username,
+        "uid": uid,
+        "commentId": commentId
+      });
+    } else {
+      Get.snackbar("Hata!", "Lütfen Yazı Yazınız",
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackStyle: SnackStyle.FLOATING);
+    }
+
+    return "1";
+  }
+
+  //yorumları çekme
+  Stream<List<Comment>> getComment(String postId) {
+    var ref = collectionreference
+        .doc(postId)
+        .collection("comment")
+        .snapshots()
+        .map((event) =>
+            event.docs.map((data) => Comment.fromMap(data)).toList());
+
+    return ref;
+  }
+
+// search
+  getUsers() async {
+    var ref = firestore
+        .collection("Person")
+        .where("username",
+            isGreaterThanOrEqualTo: searchController.searchControl.value.text)
+        .get();
+
+    return ref;
+  }
+
+  Future<void> takeAndRemoveSave(
+    var postId,
+    var saves,
+  ) async {
+    try {
+      if (saves.contains(postId)) {
+        await firestore
+            .collection("Person")
+            .doc(autService.auth.currentUser!.uid)
+            .update({
+          "Save": FieldValue.arrayRemove([postId])
+        });
+      } else {
+        // else we need to add uid to the likes array
+        await firestore
+            .collection("Person")
+            .doc(autService.auth.currentUser!.uid)
+            .update({
+          'Save': FieldValue.arrayUnion([postId])
+        });
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+
+  }
+}

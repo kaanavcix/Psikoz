@@ -1,0 +1,75 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class Post2 {
+  final String DocId;
+  final String PostText;
+  final String image;
+  final String username;
+  final String time;
+  final String profileurl;
+  final String tag;
+  final int likeCounter;
+  final dynamic likes;
+
+  Post2(
+      {required this.DocId,
+      required this.PostText,
+      required this.image,
+      required this.username,
+      required this.time,
+      required this.profileurl,
+      required this.tag,
+      required this.likeCounter,
+      required this.likes});
+
+  factory Post2.fromMap(DocumentSnapshot data) {
+    return Post2(
+        DocId: data.id,
+        PostText: data["PostText"],
+        image: data["image"],
+        username: data["username"],
+        time: data["time"],
+        profileurl: data["profileurl"],
+        tag: data["tag"],
+        likeCounter: data["likeCounter"],
+        likes: data["likes"]);
+  }
+}
+
+class Post3 {
+  final String DocId;
+  final String PostText;
+  final String image;
+  final String username;
+  final String time;
+  final String profileurl;
+  final String tag;
+  final int likeCounter;
+  final dynamic likes;
+
+  Post3(
+      {required this.DocId,
+      required this.PostText,
+      required this.image,
+      required this.username,
+      required this.time,
+      required this.profileurl,
+      required this.tag,
+      required this.likeCounter,
+      required this.likes});
+
+  factory Post3.fromMap(DocumentSnapshot data) {
+    return Post3(
+        DocId: data.id,
+        PostText: data["PostText"],
+        image: data["image"],
+        username: data["username"],
+        time: data["time"],
+        profileurl: data["profileurl"],
+        tag: data["tag"],
+        likeCounter: data["likeCounter"],
+        likes: data["likes"]);
+  }
+}
