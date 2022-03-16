@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:psikoz_me/Profile/settings/anonim.dart';
 import 'package:psikoz_me/Profile/view/model/settingsNames.dart';
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
@@ -24,41 +25,42 @@ class SettingsScreen extends StatelessWidget {
               Get.back();
             },
             icon: Icon(
-              Icons.arrow_back_ios_new,
-              color: Search_Constant.COLORGREENKA,
+              Icons.arrow_back,
+              color: Colors.black,
             )),
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                var data = settingsNames[index];
-                return Card(
-                    child: ListTile(
-                      onTap:
-                      () => Get.toNamed(settingToNamed[index]),
-                    
-                  title: Text(data),
-                ));
-              },
-              itemCount: settingsNames.length,
-            ),
+              child: ListView(
+            children: [
+              Card(
+                child: ListTile(
+                  
+                  title: const Text("Anonim Gönderiler"),
+                  onTap: () => Get.to(AnonimPage()),
+                ),
+              ),
+              ListTile(
+                
+                title: const Text("Anonim Gönderiler"),
+                onTap: () => Get.to(AnonimPage()),
+              )
+            ],
+          )),
+          button("Çıkış Yap", () {
+            controller.signOut();
+          }),
+          const SizedBox(
+            height: 25,
           ),
- 
-          button("Çıkış Yap", () {controller.signOut(); }),
-          const SizedBox(height: 25,),
           const Text("Bexbow Inc.")
         ],
       ),
     );
-
-
   }
 
-    Widget button(String text, void Function()? onTap) {
+  Widget button(String text, void Function()? onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -84,7 +86,6 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
   }
-
 
   IconButton exit(AuthService controller) {
     return IconButton(

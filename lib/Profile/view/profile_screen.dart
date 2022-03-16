@@ -13,6 +13,7 @@ import 'package:psikoz_me/core/constants/search_constants.dart';
 import 'package:psikoz_me/core/init/service/authController.dart';
 import 'package:psikoz_me/core/init/service/status_service.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:fluttericon/octicons_icons.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -78,13 +79,7 @@ class ProfileScreen extends StatelessWidget {
                 )),
           ),
           Tab(
-            icon: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 15,
-                child: SvgPicture.asset(
-                  Login_Constants.DAILYLOGO,
-                  color: BottomBar_Constant.COLORGREENKA,
-                )),
+            icon: Icon(Octicons.saved,color: Search_Constant.COLORGREENKA,)
           )
         ]);
   }
@@ -95,7 +90,8 @@ class ProfileScreen extends StatelessWidget {
     return SliverAppBar(
       pinned: false,
       expandedHeight: Get.height * 0.45,
-      backgroundColor: Search_Constant.COLORBLUEKA,
+      
+      backgroundColor: BottomBar_Constant.COLORBLUEKA,
       floating: false,
       snap: false,
       elevation: 2,

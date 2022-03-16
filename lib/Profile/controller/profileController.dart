@@ -24,6 +24,7 @@ class ProfileController extends GetxController {
     super.onReady();
     controller2.post5.bindStream(controller2.getCustomPost());
     controller2.post6.bindStream(controller2.getSavePost());
+    controller2.post7.bindStream(controller2.getAnonymousPost());
   }
 
   Future<void> getImage(ImageSource imagesource) async {

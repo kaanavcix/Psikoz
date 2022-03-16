@@ -12,6 +12,7 @@ import 'package:fluttericon/mfg_labs_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:psikoz_me/core/init/service/authController.dart';
 import 'package:psikoz_me/core/init/service/status_service.dart';
+import 'package:fluttericon/octicons_icons.dart';
 
 // devam edilecektir
 class CardPost extends StatelessWidget {
@@ -26,7 +27,8 @@ class CardPost extends StatelessWidget {
       required this.tag,
       required this.postId,
       required this.UserUid,
-      required this.likes, required this.Saves})
+      required this.likes,
+      required this.Saves})
       : super(key: key);
 
   String title;
@@ -100,29 +102,26 @@ class CardPost extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                   
-                          LikeButton(
+                    LikeButton(
                         isLiked: Saves.contains(UserUid) ? true : false,
                         onTap: (isLiked) async {
-                           await controller3.takeAndRemoveSave(postId,Saves,UserUid);
+                          await controller3.takeAndRemoveSave(
+                              postId, Saves, UserUid);
                           return null;
                         },
-                       
                         likeBuilder: (isLiked) {
                           return Saves.contains(UserUid)
                               ? Icon(
-                                  Icons.save,
-                                  color: BottomBar_Constant.COLORBLUEKA,
-                                  size: 30,
+                                  Octicons.saved,
+                                  color: BottomBar_Constant.COLORGREENKA,
+                                  size: 20,
                                 )
                               : const Icon(
-                                  Icons.save_outlined,
+                                  Octicons.unsaved,
                                   color: Colors.grey,
-                                  size: 30,
+                                  size: 20,
                                 );
                         }),
-                     
-                    
                     IconButton(
                         onPressed: () {
                           Get.bottomSheet(

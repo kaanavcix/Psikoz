@@ -49,12 +49,12 @@ List<GetPage<dynamic>>? getPages = [
       name: Routes_Constant.SEARCH,
       page: () => const SearchScreen(),
       binding: SearchBinding()),
- /*  GetPage(name: settingToNamed[0], page: () => HesapAyalari()),
+ /* GetPage(name: settingToNamed[0], page: () => HesapAyalari()),
   GetPage(name: settingToNamed[1], page: () => AnonimPage()),
-  GetPage(name: settingsNames[2], page: () => Kaydedilenler()),
-  GetPage(name: settingsNames[3], page: () => Gizlilik()),
-  GetPage(name: settingsNames[4], page: () => Guvenlik()),
-  GetPage(name: settingsNames[5], page: () => NasilKullanilir()),
-  GetPage(name: settingsNames[6], page: () => Sozlesmeler()),
-  GetPage(name: settingsNames[7], page: () => Hakkimizda()), */
+  GetPage(name: settingToNamed[2], page: () => Kaydedilenler()),
+  GetPage(name: settingToNamed[3], page: () => Gizlilik()),
+  GetPage(name: settingToNamed[4], page: () => Guvenlik()),
+  GetPage(name: settingToNamed[5], page: () => NasilKullanilir()),
+  GetPage(name: settingToNamed[6], page: () => Sozlesmeler()),
+  GetPage(name: settingToNamed[7], page: () => Hakkimizda()),  */
 ];

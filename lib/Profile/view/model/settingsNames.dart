@@ -2,18 +2,15 @@
 
 List<String> settingsNames = [
   "Hesap Ayarları",
-  "Anonim Gönderiler",
-  "Kaydedilenler",
+  "Anonim Gönderiler", //++
   "Gizlilik",
   "Güvenlik",
-  "Nasıl Kullanılır ?",
   "Sözleşmeler",
   "Hakkımızda"
 ];
 List<String> settingToNamed = [
   "/hesapAyarlari"
   "/anonimGönderi"
-  "/Kaydedilenler"
   "/Gizlilik"
   "/Güvenlik"
   "/Nasıl Kullanılır ?"
