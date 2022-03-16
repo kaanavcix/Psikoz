@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:psikoz_me/Profile/view/model/searchModel.dart';
+import 'package:psikoz_me/Profile/view/model/settingsNames.dart';
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
@@ -38,6 +38,8 @@ class SettingsScreen extends StatelessWidget {
                 var data = settingsNames[index];
                 return Card(
                     child: ListTile(
+                      onTap:
+                      () => Get.toNamed(settingToNamed[index]),
                     
                   title: Text(data),
                 ));

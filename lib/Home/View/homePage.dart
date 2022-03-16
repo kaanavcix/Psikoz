@@ -41,6 +41,7 @@ class HomeScreen extends StatelessWidget {
             likes: controller.post4[index].likes,
             UserUid: controller.autService.auth.currentUser!.uid,
             postId: controller.post4[index].DocId,
+            Saves: controller.post4[index].saves,
           );
         },
         childCount: controller.post4.length,

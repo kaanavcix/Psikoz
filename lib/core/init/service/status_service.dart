@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
 import 'package:psikoz_me/Search/controller/searchController.dart';
@@ -28,6 +29,8 @@ class StatusService extends GetxController {
   RxList<Post2> post4 = RxList<Post2>([]);
   RxList<Post3> post5 = RxList<Post3>([]);
   RxList<Post2> post6 = RxList<Post2>([]);
+  RxList<Post2> post7 = RxList<Post2>([]);
+
   RxList<Comment> comment = RxList<Comment>([]);
   List<MessageModel> message = ([]);
 
@@ -73,7 +76,9 @@ class StatusService extends GetxController {
       "profileurl": profileurl,
       "tag": tag,
       "likeCounter": likeCounter,
-      "likes": []
+      "likes": [],
+      "Save": [],
+      "uid": autService.auth.currentUser!.uid
     });
 
     return Post2(
@@ -85,7 +90,8 @@ class StatusService extends GetxController {
         profileurl: profileurl,
         tag: tag,
         likeCounter: likeCounter,
-        likes: []);
+        likes: [],
+        saves: []);
   }
 
   // sadece text
@@ -105,7 +111,9 @@ class StatusService extends GetxController {
       "profileurl": profileurl,
       "tag": tag,
       "likeCounter": likeCounter,
-      "likes": []
+      "likes": [],
+      "Save": [],
+      "uid": autService.auth.currentUser!.uid
     });
     return Post2(
         DocId: documentRef.id,
@@ -116,7 +124,8 @@ class StatusService extends GetxController {
         profileurl: profileurl,
         tag: tag,
         likeCounter: likeCounter,
-        likes: []);
+        likes: [],
+        saves: []);
   }
 
 //veri çekme
@@ -169,7 +178,7 @@ class StatusService extends GetxController {
   }
 
 // post liked
-  Future<String>? likePost(String postId, String uid, List likes) {
+  likePost(String postId, String uid, List likes) {
     // ignore: prefer_typing_uninitialized_variables, unused_local_variable
     var res;
     try {
@@ -187,7 +196,7 @@ class StatusService extends GetxController {
     } catch (e) {
       res = e.toString();
     }
-    return res;
+    return null;
   }
 
 // yorum atma
@@ -239,30 +248,45 @@ class StatusService extends GetxController {
     return ref;
   }
 
-  Future<void> takeAndRemoveSave(
-    var postId,
-    var saves,
-  ) async {
+  Future<void> takeAndRemoveSave(var postId, List saves, var uid) async {
     try {
-      if (saves.contains(postId)) {
-        await firestore
-            .collection("Person")
-            .doc(autService.auth.currentUser!.uid)
-            .update({
-          "Save": FieldValue.arrayRemove([postId])
+      if (saves.contains(uid)) {
+        await firestore.collection("Status").doc(postId).update({
+          "Save": FieldValue.arrayRemove([uid])
         });
       } else {
         // else we need to add uid to the likes array
-        await firestore
-            .collection("Person")
-            .doc(autService.auth.currentUser!.uid)
-            .update({
-          'Save': FieldValue.arrayUnion([postId])
+        await firestore.collection("Status").doc(postId).update({
+          'Save': FieldValue.arrayUnion([uid])
         });
       }
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
 
+  //savelediğin postu alma
+  getSavePost() {
+    var ref = firestore
+        .collection("Status")
+        .where("Save", arrayContains: autService.auth.currentUser!.uid)
+        .snapshots()
+        .map((event) => event.docs.map((e) => Post2.fromMap(e)).toList());
+
+    debugPrint(ref.toString());
+    return ref;
+  }
+
+  //anonim gönderileri çekme
+
+  getAnonymousPost() {
+    var ref = firestore
+        .collection("Status")
+        .where("uid", isEqualTo: autService.auth.currentUser!.uid)
+        .snapshots()
+        .map((event) => event.docs.map((e) => Post2.fromMap(e)).toList());
+
+    debugPrint(ref.toString());
+    return ref;
   }
 }

@@ -23,6 +23,7 @@ class ProfileController extends GetxController {
   void onReady() {
     super.onReady();
     controller2.post5.bindStream(controller2.getCustomPost());
+    controller2.post6.bindStream(controller2.getSavePost());
   }
 
   Future<void> getImage(ImageSource imagesource) async {

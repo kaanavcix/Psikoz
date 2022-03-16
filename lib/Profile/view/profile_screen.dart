@@ -57,7 +57,7 @@ class ProfileScreen extends StatelessWidget {
               Expanded(
                 child: TabBarView(
                     physics: const NeverScrollableScrollPhysics(),
-                    children: [Obx(() => postWidget()), saveWidget()]),
+                    children: [Obx(() => postWidget()), Obx(()=> saveWidget())]),
               )
             ])));
   }
@@ -78,7 +78,7 @@ class ProfileScreen extends StatelessWidget {
                 )),
           ),
           Tab(
-           icon: CircleAvatar(
+            icon: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 15,
                 child: SvgPicture.asset(
@@ -239,8 +239,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  
-
   Container profilePicture() {
     return Container(
       width: 120,
@@ -264,15 +262,29 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  
-
   Widget saveWidget() {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.abc_sharp),
-        onPressed: () {},
-      ),
+    var controller = Get.find<StatusService>();
+    var controller2 = Get.find<AuthService>();
+
+    return ListView.builder(
+      itemBuilder: (context, index) {
+
+        
+        var data = controller.post6[index];
+        
+        return CardPost(
+            time: data.time,
+            title: data.PostText,
+            username: data.username,
+            MediaUrl: data.image,
+            OnLong: () => Get.to(const ImageZoomOut(), arguments: data.image),
+            profileUrl: data.profileurl,
+            tag: data.tag,
+            postId: data.DocId,
+            UserUid: controller2.auth.currentUser!.uid,
+            likes: data.likes,
+            Saves: data.saves);
+      },itemCount: controller.post6.length,
     );
   }
 
@@ -298,6 +310,7 @@ class ProfileScreen extends StatelessWidget {
             likes: data.likes,
             UserUid: controller.autService.auth.currentUser!.uid,
             postId: data.DocId,
+            Saves: data.saves,
           );
         }));
       },

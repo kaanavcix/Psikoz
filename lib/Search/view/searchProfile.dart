@@ -269,6 +269,7 @@ class SearchProfile extends StatelessWidget {
         return Obx((() {
           var Data = controller.searchPost[index];
           return CardPost(
+            Saves: Data.saves,
             time: Data.time,
             title: Data.PostText,
             username: Data.username,

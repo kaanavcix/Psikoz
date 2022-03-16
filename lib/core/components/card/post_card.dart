@@ -5,12 +5,10 @@ import 'package:like_button/like_button.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/Home/widgets/CommentBottomsheet.dart';
-
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:fluttericon/elusive_icons.dart';
 import 'package:fluttericon/mfg_labs_icons.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:psikoz_me/core/init/service/authController.dart';
 import 'package:psikoz_me/core/init/service/status_service.dart';
@@ -28,7 +26,7 @@ class CardPost extends StatelessWidget {
       required this.tag,
       required this.postId,
       required this.UserUid,
-      required this.likes})
+      required this.likes, required this.Saves})
       : super(key: key);
 
   String title;
@@ -41,6 +39,7 @@ class CardPost extends StatelessWidget {
   String postId;
   String UserUid;
   List likes;
+  List Saves;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +80,8 @@ class CardPost extends StatelessWidget {
                               ))
                           : CircleAvatar(
                               backgroundImage: profileUrl == " "
-                                  ? const NetworkImage("https://picsum.photos/200")
+                                  ? const NetworkImage(
+                                      "https://picsum.photos/200")
                                   : NetworkImage(profileUrl)),
                     ),
                     Padding(
@@ -100,26 +100,29 @@ class CardPost extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    /*  Obx(
-                      ()=> LikeButton(
-                          isLiked: controller2.mySave.contains(postId) ? true : false,
-                          onTap: (isLiked) async {
-                            await controller3.takeAndRemoveSave(postId, controller2.mySave);
-                          },
-                          likeBuilder: (isLiked) {
-                            return controller2.mySave.contains(postId)
-                                ? Icon(
-                                    Icons.save,
-                                    color: BottomBar_Constant.COLORBLUEKA,
-                                    size: 24,
-                                  )
-                                : Icon(
-                                    Icons.save_outlined,
-                                    color: Colors.grey,
-                                    size: 24,
-                                  );
-                          }),
-                    ), */
+                   
+                          LikeButton(
+                        isLiked: Saves.contains(UserUid) ? true : false,
+                        onTap: (isLiked) async {
+                           await controller3.takeAndRemoveSave(postId,Saves,UserUid);
+                          return null;
+                        },
+                       
+                        likeBuilder: (isLiked) {
+                          return Saves.contains(UserUid)
+                              ? Icon(
+                                  Icons.save,
+                                  color: BottomBar_Constant.COLORBLUEKA,
+                                  size: 30,
+                                )
+                              : const Icon(
+                                  Icons.save_outlined,
+                                  color: Colors.grey,
+                                  size: 30,
+                                );
+                        }),
+                     
+                    
                     IconButton(
                         onPressed: () {
                           Get.bottomSheet(
@@ -142,7 +145,7 @@ class CardPost extends StatelessWidget {
                     : GestureDetector(
                         onLongPress: OnLong,
                         child: Hero(
-                            tag:  MediaUrl,
+                            tag: MediaUrl,
                             child: Image.network(
                               MediaUrl,
                               width: 100,
@@ -219,7 +222,9 @@ class CardPost extends StatelessWidget {
               ? ListTile(
                   onTap: () => controller2.deleteData(postId).then((value) {
                         Get.back();
-                        Get.snackbar("Silindi", "Postunuz Silindi",backgroundColor: Colors.red,snackPosition: SnackPosition.BOTTOM);
+                        Get.snackbar("Silindi", "Postunuz Silindi",
+                            backgroundColor: Colors.red,
+                            snackPosition: SnackPosition.BOTTOM);
                       }),
                   trailing: const Icon(
                     Icons.delete,

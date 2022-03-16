@@ -12,6 +12,7 @@ class Post2 {
   final String tag;
   final int likeCounter;
   final dynamic likes;
+  final dynamic saves;
 
   Post2(
       {required this.DocId,
@@ -22,7 +23,7 @@ class Post2 {
       required this.profileurl,
       required this.tag,
       required this.likeCounter,
-      required this.likes});
+      required this.likes, required this.saves});
 
   factory Post2.fromMap(DocumentSnapshot data) {
     return Post2(
@@ -34,7 +35,8 @@ class Post2 {
         profileurl: data["profileurl"],
         tag: data["tag"],
         likeCounter: data["likeCounter"],
-        likes: data["likes"]);
+        likes: data["likes"],
+        saves: data["Save"]);
   }
 }
 
@@ -48,6 +50,8 @@ class Post3 {
   final String tag;
   final int likeCounter;
   final dynamic likes;
+    final dynamic saves;
+
 
   Post3(
       {required this.DocId,
@@ -58,7 +62,8 @@ class Post3 {
       required this.profileurl,
       required this.tag,
       required this.likeCounter,
-      required this.likes});
+      required this.likes
+      ,required this.saves});
 
   factory Post3.fromMap(DocumentSnapshot data) {
     return Post3(
@@ -70,6 +75,7 @@ class Post3 {
         profileurl: data["profileurl"],
         tag: data["tag"],
         likeCounter: data["likeCounter"],
-        likes: data["likes"]);
+        likes: data["likes"]
+        ,saves: data["Save"]);
   }
 }
