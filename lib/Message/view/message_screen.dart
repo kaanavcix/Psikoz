@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Message/controller/messageScreen.dart';
 import 'package:psikoz_me/Message/view/message_Detail.dart';
+import 'package:psikoz_me/Message/view/model/ChatModel.dart';
 import 'package:psikoz_me/Message/view/model/profile.dart';
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
@@ -14,7 +15,6 @@ import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:psikoz_me/core/init/service/chatService.dart';
 import 'package:psikoz_me/core/init/service/status_service.dart';
 
-
 class MessageScreen extends StatelessWidget {
   const MessageScreen({Key? key}) : super(key: key);
 
@@ -22,6 +22,7 @@ class MessageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.find<AuthService>();
     var controller3 = Get.put(MessageSreenController());
+    var controller7 = Get.put(ChatController());
 
     return Scaffold(
       appBar: AppBar(
@@ -74,17 +75,22 @@ class MessageScreen extends StatelessWidget {
                 ))),
       ),
       body: Obx((() => ListView.builder(
-            itemCount: controller3.chat.length,
+            itemCount: controller7.chat.length,
             itemBuilder: (context, index) {
-              return listTile(controller3, index, controller);
+              return listTile(
+                controller3,
+                index,
+                controller,
+                controller7
+              );
             },
           ))),
       floatingActionButton: newMesageFAB(),
     );
   }
 
-  Widget listTile(
-      MessageSreenController controller3, int index, AuthService controller) {
+  Widget listTile(MessageSreenController controller3, int index,
+      AuthService controller, ChatController controller6) {
     return Dismissible(
       background: Container(
           child: Row(
@@ -98,19 +104,19 @@ class MessageScreen extends StatelessWidget {
             ],
           ),
           color: Colors.red),
-      key: ValueKey(controller3.chat[index]),
+      key: ValueKey(controller6.chat[index]),
       onDismissed: (DismissDirection dismissDirection) =>
-          controller.deleteChat(controller3.chat[index].docId),
+          controller.deleteChat(controller6.chat[index].docId),
       child: ListTile(
         leading: CircleAvatar(
             backgroundImage:
-                NetworkImage(controller3.chat[index].profileImage)),
-        title: Text(controller3.chat[index].name),
+                NetworkImage(controller6.chat[index].profileImage)),
+        title: Text(controller6.chat[index].name),
         onTap: () => Get.to(
             CheatDetail(
-                chatModel: controller3.chat[index],
+                chatModel: controller6.chat[index],
                 userId: controller.auth.currentUser!.uid),
-            arguments: controller3.chat[index]),
+            arguments: controller6.chat[index]),
       ),
     );
   }
@@ -210,14 +216,7 @@ class MessageScreen extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                       onTap: () async {
-                        await chatController.startConversation(profile);
-                        Get.back();
-
-                        Get.snackbar("Message", "Mesajlaşma Oluşturuldu",
-                            duration: const Duration(seconds: 5),
-                            backgroundColor: BottomBar_Constant.COLORBLUEKA,
-                            snackPosition: SnackPosition.BOTTOM,
-                            isDismissible: true);
+                        await chatController.startConversations(profile);
                       }),
                 )
                 .toList());

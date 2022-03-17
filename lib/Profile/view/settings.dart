@@ -24,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
             onPressed: () {
               Get.back();
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back,
               color: Colors.black,
             )),
@@ -38,14 +38,10 @@ class SettingsScreen extends StatelessWidget {
                 child: ListTile(
                   
                   title: const Text("Anonim Gönderiler"),
-                  onTap: () => Get.to(AnonimPage()),
+                  onTap: () => Get.to(()=>AnonimPage()),
                 ),
               ),
-              ListTile(
-                
-                title: const Text("Anonim Gönderiler"),
-                onTap: () => Get.to(AnonimPage()),
-              )
+         
             ],
           )),
           button("Çıkış Yap", () {

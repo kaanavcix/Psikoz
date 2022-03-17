@@ -19,9 +19,16 @@ TextEditingController userController = TextEditingController();
         controller: userController,
         decoration: InputDecoration(
           
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+            ),
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.black),
+            ),
             alignLabelWithHint: false,
             label: Text(Register_Constants.USERNAME_TEXT,
-                style: Login_Constants.NUNITOTEXT_JUST_TEXTSIZE)),
+                style: Login_Constants.NUNITOTEXT_JUST_TEXTSIZE
+                    .copyWith(color: Colors.black))),
       ),
     );
   }

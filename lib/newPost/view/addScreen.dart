@@ -34,23 +34,23 @@ class AddScreen extends StatelessWidget {
     var anonmyName = "${CommonVariable.ANONIM}$generate";
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Column(
+      body: controller.isLoading.value? Column(
         children: [
-         const SizedBox(height: 30),
+          const SizedBox(height: 30),
           PostIngerident(controller4: controller4, controller: controller),
-         const SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Obx(() => Padding(
-            padding: const EdgeInsets.symmetric(horizontal:8.0),
-            child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(
                   height: 100,
                   width: Get.width,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(23),
-                      boxShadow: const[
-                         BoxShadow(
+                      boxShadow: const [
+                        BoxShadow(
                           color: Color.fromARGB(255, 209, 207, 207),
                           blurRadius: 1,
                           spreadRadius: 1,
@@ -67,10 +67,10 @@ class AddScreen extends StatelessWidget {
                           ),
                         ),
                 ),
-          )),
+              )),
           const Spacer(),
           Padding(
-            padding: const EdgeInsets.only(left:15,right: 15),
+            padding: const EdgeInsets.only(left: 15, right: 15),
             child: Container(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,13 +86,16 @@ class AddScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                               underline: const SizedBox(),
                               hint: Text(
-                                controller.selectedValue.value==""?"Konu seçiniz":controller.selectedValue.value,
+                                controller.selectedValue.value == ""
+                                    ? "Konu seçiniz"
+                                    : controller.selectedValue.value,
                                 style: const TextStyle(color: Colors.black),
                               ),
                               onChanged: (String? value) =>
                                   controller.setSelected(value!),
                               items: controller5.PHYSCOLOGYOBJECTNAME
-                                  .map<DropdownMenuItem<String>>((String value) {
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
                                 return DropdownMenuItem(
                                   child: Text(value),
                                   value: value,
@@ -123,11 +126,12 @@ class AddScreen extends StatelessWidget {
                             controller.selectedImage.value = " ";
                             controller.selectedValue.value = "";
 
-                            controller.isLoading.toggle();
+                            controller.isLoading.value !=
+                                controller.isLoading.value;
                           }).catchError((error) {
                             Get.snackbar("Please",
                                 "Upss Sorry there is a wrong stuff please say again");
-                          }).whenComplete(() => controller.isLoading.toggle());
+                          }).whenComplete(() => controller.isLoading.value!= controller.isLoading.value);
                         } else if (controller.postController.value.text.length >
                             50) {
                           controller2
@@ -146,12 +150,14 @@ class AddScreen extends StatelessWidget {
                             controller10.selectedItemPosition.value = 0;
                             controller.postController.text = "";
                             controller.selectedValue.value = "";
-                            controller.isLoading.toggle();
+                            controller.isLoading.value !=
+                                controller.isLoading.value;
                           }).catchError((error) {
                             Get.snackbar("Please",
                                 "Upss Sorry there is a wrong stuff please say again");
-                          }).whenComplete(
-                                  () => controller.isLoading.toggle());
+                          }).whenComplete(() =>
+                                  controller.isLoading.value !=
+                                  controller.isLoading.value);
                         } else {
                           Get.snackbar("Please",
                               "Lütfen karakter sayısı 50 den fazla olsun");
@@ -161,7 +167,7 @@ class AddScreen extends StatelessWidget {
                           height: 50,
                           width: 100,
                           decoration: BoxDecoration(
-                              boxShadow: const[BoxShadow()],
+                              boxShadow: const [BoxShadow()],
                               gradient: LinearGradient(
                                   colors: Search_Constant.LINEARGRADIENT_COLOR),
                               borderRadius: const BorderRadius.only(
@@ -191,9 +197,7 @@ class AddScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      ): Center(child: CircularProgressIndicator(),),
     );
   }
 }
-
-

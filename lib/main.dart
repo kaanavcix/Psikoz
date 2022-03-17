@@ -28,6 +28,7 @@ class Psikoz extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return GetMaterialApp(
+      
       title: 'Psikoz App',
       debugShowCheckedModeBanner: false,
       getPages: getPages,

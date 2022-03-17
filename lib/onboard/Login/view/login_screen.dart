@@ -45,7 +45,7 @@ class Login_Screen extends StatelessWidget {
           Login_Constants.LOGO_IMAGE2_SVG,
           semanticsLabel: "Logo Svg",
           color: Colors.white,
-          height: 90,
+          height: 100,
         ),
         const SizedBox(
           height: 20,
@@ -79,12 +79,12 @@ class Login_Screen extends StatelessWidget {
             ForgetPassword(
                 onPressed: () => Get.toNamed(Routes_Constant.REGISTER)),
             LoginButton(controller, emailController, passwordController),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             SignInWith(),
           ],
         ),
-        width: Get.width * 0.75,
-        height: Get.height * 0.58,
+        width: Get.width * 0.70,
+        height: Get.height * 0.52,
         decoration: Login_Constants.BOXDECORATION);
   }
 

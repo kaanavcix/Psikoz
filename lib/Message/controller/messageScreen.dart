@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class MessageSreenController extends GetxController {
-  RxList<ChatModel> chat = RxList<ChatModel>([]);
+  
 
   var controller = Get.put(ChatController());
   var username = "".obs;
@@ -18,7 +18,7 @@ class MessageSreenController extends GetxController {
   void onInit() {
     super.onInit();
 
-    chat.bindStream(controller.getConversation());
+    controller.chat.bindStream(controller.getConversation());
   }
 
   getSearchUser(String uid) async {

@@ -2,7 +2,8 @@
 
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:psikoz_me/Message/view/model/ChatModel.dart';
+import 'package:psikoz_me/Message/view/message_Detail.dart';
+import 'package:psikoz_me/Message/view/model/chatModel.dart';
 import 'package:psikoz_me/Message/view/model/profile.dart';
 import 'package:psikoz_me/core/init/service/authController.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,7 +18,7 @@ class ChatController extends GetxController {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   var authservice = Get.find<AuthService>();
-
+  RxList<ChatModel> chat = RxList<ChatModel>([]);
   Future<List<Profile>> getProfiles() async {
     var ref = firestore.collection("Person").orderBy("username");
 
@@ -64,7 +65,7 @@ class ChatController extends GetxController {
         displayMessage: "");
   }
 
-  startConversation(Profile profile) async {
+  Future <ChatModel> startConversation(Profile profile) async {
     var ref = firestore.collection("Chat");
 
     // ignore: unused_local_variable
@@ -81,10 +82,10 @@ class ChatController extends GetxController {
     );
   }
 
-  Future<void>? startConversations(Profile profile) {
-    return startConversation(profile);
-    
-   
+  Future<void>? startConversations(Profile profile) async{
+    dynamic ref = await startConversation(profile);
+
+     Get.to(()=> CheatDetail(userId: authservice.auth.currentUser!.uid, chatModel: ref));
   }
 
   Future filterProfiles(String filter) async {

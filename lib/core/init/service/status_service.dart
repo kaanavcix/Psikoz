@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
+import 'package:psikoz_me/Profile/view/model/profile_model.dart';
 import 'package:psikoz_me/Search/controller/searchController.dart';
 import 'package:psikoz_me/core/init/service/authController.dart';
 import 'package:psikoz_me/newPost/view/models/addmodel.dart';
@@ -287,6 +288,17 @@ class StatusService extends GetxController {
         .map((event) => event.docs.map((e) => Post2.fromMap(e)).toList());
 
     debugPrint(ref.toString());
+    return ref;
+  }
+
+  Stream <List<ProfileModel>> getCurrentData() {
+    var ref = firestore
+        .collection("Person")
+        .where("uid", isEqualTo: autService.auth.currentUser!.uid)
+        .snapshots()
+        .map(
+            (event) => event.docs.map((e) => ProfileModel.fromMap(e)).toList());
+
     return ref;
   }
 }

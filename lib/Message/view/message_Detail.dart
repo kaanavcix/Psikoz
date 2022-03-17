@@ -15,7 +15,7 @@ class CheatDetail extends StatefulWidget {
   const CheatDetail({required this.userId, required this.chatModel, Key? key})
       : super(key: key);
   final dynamic userId;
-  final ChatModel chatModel;
+  final dynamic chatModel;
 
   @override
   State<CheatDetail> createState() => _CheatDetailState();

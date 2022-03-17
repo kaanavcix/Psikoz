@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -27,7 +26,7 @@ class NewPostController extends GetxController {
     if (pickedFile != null) {
       selectedImage.value = pickedFile;
     } else {
-      Get.snackbar("Hi", "No photo");
+      Get.snackbar("Hi", "No photo",backgroundColor: Colors.red);
     }
   }
 
