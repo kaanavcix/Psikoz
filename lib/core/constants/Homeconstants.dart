@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeConstant {
-  static String APP_NAME = "Psikoz.me";
+  static String APP_NAME = "Psikoz";
   static TextStyle NAMESTYLE = GoogleFonts.dancingScript(
     color: Colors.black,
     fontSize: 30,

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
 import 'package:psikoz_me/Profile/view/model/profile_model.dart';
 import 'package:psikoz_me/Search/controller/searchController.dart';
@@ -45,14 +46,9 @@ class StatusService extends GetxController {
         .doc(collectionreference.id)
         .collection("comment");
     post4.bindStream(getAllPost());
-    post5.bindStream(getCustomPost());
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-    post5.bindStream(getCustomPost());
-  }
+
 
 //veri ekleme resimle
   Future<Post2> addPost(
@@ -139,15 +135,7 @@ class StatusService extends GetxController {
     return ref;
   }
 
-  Stream<List<Post3>> getCustomPost() {
-    var customData = collectionreference
-        .where("username",
-            isEqualTo: autService.myUsername.value) //bakalım buna
-        .snapshots()
-        .map((event) => event.docs.map((e) => Post3.fromMap(e)).toList());
-
-    return customData;
-  }
+  
 
   //veri silme
   Future<void> deleteData(String docId) async {
@@ -155,28 +143,7 @@ class StatusService extends GetxController {
     return ref;
   }
 
-  Future<UserCredential?> getUserCurrentData() async {
-    final firebaseUser = FirebaseAuth.instance.currentUser;
-    if (firebaseUser != null) {
-      firestore
-          .collection("Person")
-          .doc(firebaseUser.uid)
-          .snapshots()
-          .listen((ds4) {
-        myUsername.value = ds4.data()!["username"];
-        myUserAvatar.value = ds4.data()!["Image"] ?? " ";
-        myFallow.value = ds4.data()!["Fallow"] ?? 0;
-      });
-      /*  .get()
-          .then((ds4) {
-        myUsername.value = ds4.data()!["username"];
-        myUserAvatar.value = ds4.data()!["Image"] ?? " ";
-        myFallow.value = ds4.data()!["Fallow"] ?? 0;
-      }); */
-
-    }
-    return null;
-  }
+  
 
 // post liked
   likePost(String postId, String uid, List likes) {

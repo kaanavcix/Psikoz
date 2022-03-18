@@ -7,12 +7,14 @@ import 'package:psikoz_me/Message/view/model/chatModel.dart';
 import 'package:psikoz_me/Message/view/model/profile.dart';
 import 'package:psikoz_me/core/init/service/authController.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatController extends GetxController {
+  var commentId;
   @override
   void onInit() {
     super.onInit();
-
+    
     getProfiles();
   }
 
@@ -47,7 +49,11 @@ class ChatController extends GetxController {
                 (member) => member != authservice.auth.currentUser!.uid,
               ),
         );
-        return ChatModel.fromMap(snapshop, otherUser);
+        return ChatModel.fromMap(
+          snapshop,
+          otherUser,
+          commentId
+        );
       }).toList();
     });
   }
@@ -65,27 +71,32 @@ class ChatController extends GetxController {
         displayMessage: "");
   }
 
-  Future <ChatModel> startConversation(Profile profile) async {
+  Future<ChatModel> startConversation(Profile profile, var Id) async {
     var ref = firestore.collection("Chat");
 
     // ignore: unused_local_variable
-    var documentref = await ref.add({
+    var documentref = await ref.doc(Id).set({
       "displayMessage": "",
       "members": [authservice.auth.currentUser!.uid, profile.docId],
     });
 
     return ChatModel(
-      docId: ref.id,
+      docId: Id,
       name: profile.username,
       profileImage: profile.profileImage,
       displayMessage: "",
     );
   }
 
-  Future<void>? startConversations(Profile profile) async{
-    dynamic ref = await startConversation(profile);
+  Future<void>? startConversations(Profile profile) async {
+    var commentId = const Uuid().v1();
 
-     Get.to(()=> CheatDetail(userId: authservice.auth.currentUser!.uid, chatModel: ref));
+    ChatModel ref = await startConversation(profile, commentId);
+
+    var data = Get.to(() =>
+        CheatDetail(userId: authservice.auth.currentUser!.uid, chatModel: ref));
+
+    return data;
   }
 
   Future filterProfiles(String filter) async {

@@ -3,7 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Message/controller/messageController.dart';
-import 'package:psikoz_me/Message/view/model/ChatModel.dart';
+
+import 'package:psikoz_me/Message/view/model/chatModel.dart';
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
@@ -12,10 +13,10 @@ import 'package:psikoz_me/core/init/service/status_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CheatDetail extends StatefulWidget {
-  const CheatDetail({required this.userId, required this.chatModel, Key? key})
+  CheatDetail({required this.userId, required this.chatModel, Key? key})
       : super(key: key);
   final dynamic userId;
-  final dynamic chatModel;
+  ChatModel chatModel;
 
   @override
   State<CheatDetail> createState() => _CheatDetailState();
@@ -25,13 +26,13 @@ class _CheatDetailState extends State<CheatDetail> {
   var controller = Get.find<StatusService>();
   var controller2 = Get.put(MessageController());
 
-
   late CollectionReference _ref;
   @override
   void initState() {
     super.initState();
     _ref = controller.firestore
         .collection("Chat/${widget.chatModel.docId}/messages");
+           debugPrint(widget.chatModel.docId.toString());
   }
 
   @override
@@ -146,7 +147,8 @@ class _CheatDetailState extends State<CheatDetail> {
                             color: Colors.white,
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
                             child: TextField(
                                 controller: controller2.editingController,
                                 cursorColor: Colors.white,
@@ -175,7 +177,11 @@ class _CheatDetailState extends State<CheatDetail> {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: InkWell(
                         onTap: () async {
-                          await _ref.add({
+                          debugPrint(widget.chatModel.docId.toString());
+                          await controller.firestore
+                              .collection(
+                                  "Chat/${widget.chatModel.docId}/messages")
+                              .add({
                             "senderId": widget.userId,
                             "message": controller2.editingController.text,
                             "timestamp": DateTime.now()

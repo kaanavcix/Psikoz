@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/Message/controller/messageScreen.dart';
 import 'package:psikoz_me/Message/view/message_Detail.dart';
-import 'package:psikoz_me/Message/view/model/ChatModel.dart';
 import 'package:psikoz_me/Message/view/model/profile.dart';
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
@@ -21,6 +21,7 @@ class MessageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var controller = Get.find<AuthService>();
+    var controller2 = Get.find<HomeController>();
     var controller3 = Get.put(MessageSreenController());
     var controller7 = Get.put(ChatController());
 
@@ -43,8 +44,8 @@ class MessageScreen extends StatelessWidget {
                     CircleAvatar(
                       radius: 25,
                       backgroundColor: Search_Constant.COLORBLUEKA,
-                      backgroundImage: controller.myUserAvatar.value != ""
-                          ? NetworkImage(controller.myUserAvatar.value)
+                      backgroundImage: controller2.profileModel.first.Image != ""
+                          ? NetworkImage(controller2.profileModel.first.Image)
                           : const NetworkImage("https://picsum.photos/200"),
                     ),
                     const SizedBox(
@@ -58,7 +59,7 @@ class MessageScreen extends StatelessWidget {
                           MessageConstants.HOSGELDINIZ,
                           style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK,
                         ),
-                        Text(controller.myUsername.value,
+                        Text(controller2.profileModel.first.username,
                             style: Login_Constants.NUNITOTEXT_STYLE_W700
                                 .copyWith(
                                     fontWeight: FontWeight.bold, fontSize: 20)),
@@ -77,12 +78,7 @@ class MessageScreen extends StatelessWidget {
       body: Obx((() => ListView.builder(
             itemCount: controller7.chat.length,
             itemBuilder: (context, index) {
-              return listTile(
-                controller3,
-                index,
-                controller,
-                controller7
-              );
+              return listTile(controller3, index, controller, controller7);
             },
           ))),
       floatingActionButton: newMesageFAB(),

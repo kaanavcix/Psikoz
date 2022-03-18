@@ -17,7 +17,10 @@ class ChatModel {
       required this.displayMessage,
       });
 
-  factory ChatModel.fromMap(DocumentSnapshot data, Profile otherUser) {
+                  
+
+
+  factory ChatModel.fromMap(DocumentSnapshot data, Profile otherUser,var id) {
     return ChatModel(
         docId: data.id,
         displayMessage: data["displayMessage"],

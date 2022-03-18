@@ -15,8 +15,8 @@ class BottomBar_Constant {
   static List<Color> LINEARGRADIENT_COLOR = [COLORGREENKA, COLORBLUEKA];
   static ShapeBorder BOTTOMSHAPEBORDER = const RoundedRectangleBorder(
     borderRadius: BorderRadius.only(
-      topRight: Radius.circular(13),
-      topLeft: Radius.circular(13),
+      topRight: Radius.circular(20),
+      topLeft: Radius.circular(20),
     ),
   );
 }

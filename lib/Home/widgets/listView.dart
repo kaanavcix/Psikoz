@@ -12,8 +12,9 @@ class ListViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put<Variable>(Variable());
-    var controller2 = Get.put(HomeController());
+     var controller2 = Get.put(HomeController());
+    var controller = Get.put(Variable());
+   
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,

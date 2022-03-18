@@ -11,7 +11,7 @@ class ProfileController extends GetxController {
   var secondPath = " ".obs;
   var pickerImage = ImagePicker();
   var controller = Get.put(AuthService());
-    var controllerd = Get.put(HomeController());
+  var controllerd = Get.put(HomeController());
 
   Rx<dynamic> selectedImage = Rx<dynamic>(null);
   var controller2 = Get.put(StatusService());
@@ -25,10 +25,10 @@ class ProfileController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    controller2.post5.bindStream(controller2.getCustomPost());
+    
     controller2.post6.bindStream(controller2.getSavePost());
     controller2.post7.bindStream(controller2.getAnonymousPost());
-    controllerd.mewthod();
+    
   }
 
   Future<void> getImage(ImageSource imagesource) async {

@@ -16,7 +16,7 @@ class SnakeBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SnakeNavigationBar.gradient(
-      shadowColor: Colors.transparent,
+      shadowColor: Colors.white,
       backgroundGradient:
           const LinearGradient(colors: [Colors.white, Colors.white]),
       snakeViewGradient:
@@ -26,7 +26,7 @@ class SnakeBottomNavigationBar extends StatelessWidget {
       unselectedItemGradient:
           const LinearGradient(colors: [Colors.grey, Colors.grey]),
       shape: BottomBar_Constant.BOTTOMSHAPEBORDER,
-      elevation: 2,
+      elevation: 5,
       showSelectedLabels: false,
       showUnselectedLabels: false,
       currentIndex: selectedIndex,

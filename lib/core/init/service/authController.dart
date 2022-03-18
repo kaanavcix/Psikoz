@@ -110,7 +110,7 @@ class AuthService extends GetxController {
   }
 
   Future<UserCredential?> getUserCurrentData() async {
-    var firebaseUser =  FirebaseAuth.instance.currentUser;
+    var firebaseUser = FirebaseAuth.instance.currentUser;
     if (firebaseUser != null) {
       await _fireStore
           .collection("Person")
@@ -129,5 +129,6 @@ class AuthService extends GetxController {
 
   deleteChat(String docId) async {
     await _fireStore.collection("Chat").doc(docId).delete();
+    await _fireStore.collection("Chat").doc(docId).collection("Message");
   }
 }
