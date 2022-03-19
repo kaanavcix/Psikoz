@@ -6,7 +6,7 @@ import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:psikoz_me/core/constants/routes_constant.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
 import 'package:psikoz_me/onboard/Login/Controller/login_controller.dart';
 import 'package:psikoz_me/onboard/Widgets/EmailInput.dart';
 import 'package:psikoz_me/onboard/Widgets/ForgetPassword.dart';

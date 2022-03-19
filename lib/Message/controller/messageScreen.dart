@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class MessageSreenController extends GetxController {
   
 
-  var controller = Get.put(ChatController());
+  var controller = Get.put(ChatService());
   var username = "".obs;
   var profileImage = "".obs;
   TextEditingController messageOpenController = TextEditingController();

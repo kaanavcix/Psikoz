@@ -4,17 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Home/Controller/homeController.dart';
+import 'package:psikoz_me/Home/View/Natificounts.dart';
 import 'package:psikoz_me/Home/widgets/CommentBottomsheet.dart';
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:fluttericon/elusive_icons.dart';
 import 'package:fluttericon/mfg_labs_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
-import 'package:fluttericon/octicons_icons.dart';
 
-// devam edilecektir
+import 'package:fluttericon/octicons_icons.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
+
+// tamamlanmıştır bazı ufak tefek değişiklikler yapılacaktır
 class CardPost extends StatelessWidget {
   CardPost(
       {Key? key,
@@ -28,7 +30,7 @@ class CardPost extends StatelessWidget {
       required this.postId,
       required this.UserUid,
       required this.likes,
-      required this.Saves})
+      required this.Saves,required this.uid})
       : super(key: key);
 
   String title;
@@ -42,11 +44,12 @@ class CardPost extends StatelessWidget {
   String UserUid;
   List likes;
   List Saves;
+  var uid;
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(HomeController());
-    var controller3 = Get.put(StatusService());
+    var controller3 = Get.find<StatusService>();
     var controller2 = Get.find<AuthService>();
 
     return Padding(
@@ -59,8 +62,6 @@ class CardPost extends StatelessWidget {
             ],
             borderRadius: BorderRadius.circular(20),
             color: Colors.white38,
-
-            //border: Border.all(color: Colors.black, width: 0.5)
           ),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -71,35 +72,39 @@ class CardPost extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: username.contains("Psikoz")
-                          ? CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: SvgPicture.asset(
-                                Login_Constants.LOGO_IMAGE2_SVG,
-                              ))
-                          : CircleAvatar(
-                              backgroundImage: profileUrl == " "
-                                  ? const NetworkImage(
-                                      "https://picsum.photos/200")
-                                  : NetworkImage(profileUrl)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(username,
-                              style: Login_Constants.NUNITOTEXT_STYLE),
-                          Text(
-                            time,
-                            style: Login_Constants.NUNITOTEXT_STYLE_W700
-                                .copyWith(color: Colors.black),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: username.contains("Psikoz")
+                              ? CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: SvgPicture.asset(
+                                    Login_Constants.LOGO_IMAGE2_SVG,
+                                  ))
+                              : CircleAvatar(
+                                  backgroundImage: profileUrl == " "
+                                      ? const NetworkImage(
+                                          "https://picsum.photos/200")
+                                      : NetworkImage(profileUrl)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(username,
+                                  style: Login_Constants.NUNITOTEXT_STYLE),
+                              Text(
+                                time,
+                                style: Login_Constants.NUNITOTEXT_STYLE_W700
+                                    .copyWith(color: Colors.black),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     const Spacer(),
                     LikeButton(
@@ -125,7 +130,7 @@ class CardPost extends StatelessWidget {
                     IconButton(
                         onPressed: () {
                           Get.bottomSheet(
-                              BottomSheetDelete(controller2, controller3));
+                              BottomSheetDelete(controller, controller3));
                         },
                         icon: const Icon(Icons.more_horiz_rounded))
                   ],
@@ -138,9 +143,7 @@ class CardPost extends StatelessWidget {
                   ),
                 ),
                 MediaUrl.length < 6
-                    ? Container(
-                        color: Colors.transparent,
-                      )
+                    ? const SizedBox()
                     : GestureDetector(
                         onLongPress: OnLong,
                         child: Hero(
@@ -206,10 +209,12 @@ class CardPost extends StatelessWidget {
     );
   }
 
-  Widget BottomSheetDelete(AuthService controller, StatusService controller2) {
+  Widget BottomSheetDelete(
+      HomeController controller, StatusService controller2) {
     return Padding(
-      padding: EdgeInsets.only(bottom: Get.height * 0.3, left: 15, right: 15),
+      padding: EdgeInsets.only(left: 15, right: 15),
       child: Container(
+        height: Get.height * 0.3,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: Colors.white,
@@ -217,7 +222,7 @@ class CardPost extends StatelessWidget {
               BoxShadow(color: Colors.white, blurRadius: 1, spreadRadius: 1)
             ]),
         child: Column(children: [
-          username == controller.myUsername.value
+          uid == controller2.autService.auth.currentUser!.uid
               ? ListTile(
                   onTap: () => controller2.deleteData(postId).then((value) {
                         Get.back();

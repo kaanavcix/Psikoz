@@ -3,13 +3,13 @@
 import 'package:get/get.dart';
 import 'package:psikoz_me/Main/controller/bottomnavi_controller.dart';
 import 'package:psikoz_me/Search/view/model/searchMode.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
+
 import 'package:psikoz_me/newPost/controller/newpost_controller.dart';
 
 class NewPostBinding implements Bindings {
   @override
   void dependencies() {
-    Get.put<StatusService>(StatusService());
+  
     Get.put<NewPostController>(NewPostController());
     Get.put(BottomNavigatiorController());
     Get.lazyPut(() => Variable());

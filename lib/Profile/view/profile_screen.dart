@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/Home/View/image_zoomout.dart';
@@ -11,10 +10,11 @@ import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:fluttericon/octicons_icons.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -252,7 +252,7 @@ class ProfileScreen extends StatelessWidget {
             postId: data.DocId,
             UserUid: controller2.auth.currentUser!.uid,
             likes: data.likes,
-            Saves: data.saves);
+            Saves: data.saves,uid: data.uid,);
       },
       itemCount: controller.post6.length,
     );
@@ -281,6 +281,7 @@ class ProfileScreen extends StatelessWidget {
             UserUid: controller.autService.auth.currentUser!.uid,
             postId: data.DocId,
             Saves: data.saves,
+            uid: data.uid,
           );
         }));
       },

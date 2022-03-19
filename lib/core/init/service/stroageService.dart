@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class StroageService extends GetxController {
+class StroageService extends GetxService {
   final FirebaseStorage _firebaseStroage = FirebaseStorage.instance;
   final FirebaseStorage _firebaseStroage2 = FirebaseStorage.instance;
 

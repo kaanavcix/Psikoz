@@ -11,7 +11,7 @@ import 'package:psikoz_me/core/constants/search_constants.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
      var controller2 = Get.put(SearchController());
-  var controller = Get.put(StatusService());
+  var controller = Get.find<StatusService>();
     return Scaffold(
         appBar: appBarSearch(controller2),
         body: controller2.searchControl.text.length > 1

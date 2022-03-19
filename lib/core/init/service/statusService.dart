@@ -1,33 +1,30 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
 import 'package:psikoz_me/Profile/view/model/profile_model.dart';
 import 'package:psikoz_me/Search/controller/searchController.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
+
+import 'package:psikoz_me/core/init/service/stroageService.dart';
 import 'package:psikoz_me/newPost/view/models/addmodel.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:psikoz_me/core/init/service/stroage_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 import 'package:psikoz_me/newPost/view/models/commentModel.dart';
 
-class StatusService extends GetxController {
+class StatusService extends GetxService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final _storageService = Get.put(StroageService(), permanent: true);
-  final autService = Get.put(AuthService(), permanent: true);
+  final _storageService = Get.find<StroageService>();
+  final autService = Get.find<AuthService>();
   final searchController = Get.put(SearchController());
 
   late CollectionReference collectionreference;
   late CollectionReference collectionreferenceComment;
   final firebaseUser = FirebaseAuth.instance.currentUser;
-  var myFallow = [].obs;
-  var myUsername = " ".obs;
-  var myUserAvatar = "".obs;
-
+ 
   RxList<Post2> post4 = RxList<Post2>([]);
   RxList<Post3> post5 = RxList<Post3>([]);
   RxList<Post2> post6 = RxList<Post2>([]);
@@ -122,7 +119,7 @@ class StatusService extends GetxController {
         tag: tag,
         likeCounter: likeCounter,
         likes: [],
-        saves: []);
+        saves: [],);
   }
 
 //veri çekme
@@ -136,7 +133,6 @@ class StatusService extends GetxController {
   }
 
   
-
   //veri silme
   Future<void> deleteData(String docId) async {
     var ref = await collectionreference.doc(docId).delete();

@@ -8,7 +8,7 @@ import 'package:psikoz_me/Home/widgets/trendContainer.dart';
 import 'package:psikoz_me/core/components/card/post_card.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/core/constants/Homeconstants.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
         body: CustomScrollView(
       physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
-      slivers: [sliverBar(), sliverBox(), Obx(() => sliverList())],
+      slivers: [sliverBar(), /* sliverBox() */ Obx(() => sliverList())],
     ));
   }
 
@@ -29,19 +29,22 @@ class HomeScreen extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
+          var data =controller.post4[index];
           return CardPost(
+            
             OnLong: () => Get.to(const ImageZoomOut(),
-                arguments: controller.post4[index].image),
-            username: controller.post4[index].username,
-            title: controller.post4[index].PostText,
-            time: controller.post4[index].time,
-            MediaUrl: controller.post4[index].image,
-            profileUrl: controller.post4[index].profileurl,
-            tag: controller.post4[index].tag,
-            likes: controller.post4[index].likes,
+                arguments: data.image),
+            username: data.username,
+            title: data.PostText,
+            time: data.time,
+            MediaUrl: data.image,
+            profileUrl: data.profileurl,
+            tag: data.tag,
+            likes: data.likes,
             UserUid: controller.autService.auth.currentUser!.uid,
-            postId: controller.post4[index].DocId,
-            Saves: controller.post4[index].saves,
+            postId: data.DocId,
+            Saves: data.saves,
+            uid: data.uid ,
           );
         },
         childCount: controller.post4.length,

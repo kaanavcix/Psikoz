@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
+
 
 class BottomNavigatiorController extends GetxController {
   var controller = Get.find<AuthService>();

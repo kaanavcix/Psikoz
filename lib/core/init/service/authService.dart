@@ -7,10 +7,10 @@ import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:psikoz_me/Main/view/main_page.dart';
-import 'package:psikoz_me/core/init/service/stroage_service.dart';
+import 'package:psikoz_me/core/init/service/stroageService.dart';
 import 'package:psikoz_me/onboard/Login/view/login_screen.dart';
 
-class AuthService extends GetxController {
+class AuthService extends GetxService {
   final FirebaseAuth auth = FirebaseAuth.instance;
   late Rx<User?> firebaseUser;
   late CollectionReference collectionreference;
@@ -19,7 +19,7 @@ class AuthService extends GetxController {
   var myUserAvatar = "".obs;
   var mySave = [].obs;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  final _storageService = Get.put(StroageService());
+  final _storageService = Get.find<StroageService>();
 
   @override
   void onInit() {

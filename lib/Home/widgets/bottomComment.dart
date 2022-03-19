@@ -3,8 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Home/Controller/homeController.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
+
 
 class BottomComment extends StatelessWidget {
   const BottomComment({required this.snap, Key? key}) : super(key: key);

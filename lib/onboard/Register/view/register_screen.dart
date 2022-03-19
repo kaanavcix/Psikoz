@@ -4,7 +4,8 @@ import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:psikoz_me/core/constants/register_constant.dart';
 import 'package:psikoz_me/core/constants/routes_constant.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
+import 'package:psikoz_me/core/init/service/authService.dart';
+
 import 'package:psikoz_me/onboard/Register/controller/registerController.dart';
 import 'package:psikoz_me/onboard/Widgets/EmailInput.dart';
 import 'package:psikoz_me/onboard/Widgets/PasswordInput.dart';

@@ -5,14 +5,14 @@ import 'package:psikoz_me/Profile/view/model/settingsNames.dart';
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(AuthService());
+    var controller = Get.find<AuthService>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

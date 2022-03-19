@@ -7,7 +7,12 @@ class ImageZoomOut extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var data = Get.arguments;
-    
-    return Center(child: Hero(tag: "$data", child: GestureDetector(onTap: (() => Get.back()),child: Image.network(data))),);
+
+    return Center(
+      child: Hero(
+          tag: "$data",
+          child: GestureDetector(
+              onTap: (() => Get.back()), child: Image.network(data))),
+    );
   }
 }

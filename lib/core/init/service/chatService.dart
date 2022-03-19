@@ -5,11 +5,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:psikoz_me/Message/view/message_Detail.dart';
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
 import 'package:psikoz_me/Message/view/model/profile.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
-class ChatController extends GetxController {
+class ChatService extends GetxService {
   var commentId;
   @override
   void onInit() {

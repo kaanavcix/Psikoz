@@ -1,10 +1,10 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/core/constants/addPost_constant.dart';
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
 import 'package:psikoz_me/newPost/controller/newpost_controller.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/newPost/widgets/textField.dart';
@@ -15,7 +15,7 @@ class PostIngerident extends StatelessWidget {
     required this.controller,
   }) : super(key: key);
 
-  final AuthService controller4;
+  final HomeController controller4;
   final NewPostController controller;
 
   @override
@@ -37,9 +37,9 @@ class PostIngerident extends StatelessWidget {
                           child: CircleAvatar(
                             radius: 18,
                             backgroundColor: BottomBar_Constant.COLORBLUEKA,
-                            backgroundImage: controller4.myUserAvatar.value !=
+                            backgroundImage: controller4.profileModel.first.Image !=
                                     " "
-                                ? NetworkImage(controller4.myUserAvatar.value)
+                                ? NetworkImage(controller4.profileModel.first.Image)
                                 : const NetworkImage("https://picsum.photos/200"),
                           ),
                         ),

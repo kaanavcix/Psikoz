@@ -13,9 +13,10 @@ import 'package:get/get.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:psikoz_me/core/init/service/authService.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class SearchProfile extends StatelessWidget {
   const SearchProfile({Key? key}) : super(key: key);
@@ -280,6 +281,7 @@ class SearchProfile extends StatelessWidget {
             likes: Data.likes,
             UserUid: controller2.auth.currentUser!.uid,
             postId: Data.DocId,
+            uid: Data.uid,
           );
         }));
       },

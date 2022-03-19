@@ -8,6 +8,6 @@ class MessageBinding implements Bindings {
   void dependencies() {
     Get.put(MessageController());
     Get.put(MessageSreenController());
-    Get.put(ChatController());
+    
   }
 }

@@ -7,7 +7,7 @@ import 'package:psikoz_me/Search/controller/searchController.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:psikoz_me/core/components/card/post_card.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class SearchDetail extends StatelessWidget {
   const SearchDetail({Key? key}) : super(key: key);
@@ -37,7 +37,7 @@ class SearchDetail extends StatelessWidget {
   }
 
   SliverList sliverList(int data) {
-    var controller = Get.put(StatusService());
+    var controller = Get.find<StatusService>();
     var controller5 = Get.find<SearchController>();
 
     return SliverList(
@@ -58,6 +58,7 @@ class SearchDetail extends StatelessWidget {
             UserUid: controller.autService.auth.currentUser!.uid,
             postId: controller.post4[index].DocId,
             Saves: controller.post4[index].saves,
+            uid: controller.post4[index].uid,
            
                 )
               : const SizedBox(height: 0);

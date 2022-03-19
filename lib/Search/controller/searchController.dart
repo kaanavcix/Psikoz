@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:psikoz_me/Search/view/model/searchMode.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
 import 'package:psikoz_me/newPost/view/models/addmodel.dart';
 
 class SearchController extends GetxController {

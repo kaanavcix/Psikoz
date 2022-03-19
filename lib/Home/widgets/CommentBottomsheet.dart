@@ -5,8 +5,8 @@ import 'package:psikoz_me/Home/widgets/bottomComment.dart';
 import 'package:psikoz_me/core/components/card/comment_card.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class CommentSheet extends StatelessWidget {
   CommentSheet({required this.snap, Key? key}) : super(key: key);

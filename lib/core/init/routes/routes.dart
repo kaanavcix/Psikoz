@@ -3,17 +3,7 @@ import 'package:psikoz_me/Home/View/homePage.dart';
 import 'package:psikoz_me/Home/bindings/homeBinding.dart';
 import 'package:psikoz_me/Message/bindings/messagebinding.dart';
 import 'package:psikoz_me/Message/view/message_screen.dart';
-import 'package:psikoz_me/Profile/settings/anonim.dart';
-import 'package:psikoz_me/Profile/settings/g%C3%BCvenlik.dart';
-import 'package:psikoz_me/Profile/settings/gizlilik.dart';
-import 'package:psikoz_me/Profile/settings/hakkimizda.dart';
-import 'package:psikoz_me/Profile/settings/hesapAyarlari.dart';
-import 'package:psikoz_me/Profile/settings/kaydedilenler.dart';
-import 'package:psikoz_me/Profile/settings/nasilKullanilir.dart';
-import 'package:psikoz_me/Profile/settings/sozlesmeler.dart';
-import 'package:psikoz_me/Profile/view/model/settingsNames.dart';
 import 'package:psikoz_me/Profile/view/settings.dart';
-import 'package:psikoz_me/Search/binding/searchBinding.dart';
 import 'package:psikoz_me/Search/view/search_Screen.dart';
 import 'package:psikoz_me/core/constants/routes_constant.dart';
 import 'package:psikoz_me/newPost/bindings/NewPost.dart';
@@ -48,7 +38,7 @@ List<GetPage<dynamic>>? getPages = [
   GetPage(
       name: Routes_Constant.SEARCH,
       page: () => const SearchScreen(),
-      binding: SearchBinding()),
+     ),
  /* GetPage(name: settingToNamed[0], page: () => HesapAyalari()),
   GetPage(name: settingToNamed[1], page: () => AnonimPage()),
   GetPage(name: settingToNamed[2], page: () => Kaydedilenler()),

@@ -9,8 +9,8 @@ import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class CheatDetail extends StatefulWidget {
   CheatDetail({required this.userId, required this.chatModel, Key? key})

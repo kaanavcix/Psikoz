@@ -9,11 +9,11 @@ import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:psikoz_me/core/constants/message_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
-import 'package:psikoz_me/core/init/service/authController.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
 import 'package:psikoz_me/core/init/service/chatService.dart';
-import 'package:psikoz_me/core/init/service/status_service.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class MessageScreen extends StatelessWidget {
   const MessageScreen({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class MessageScreen extends StatelessWidget {
     var controller = Get.find<AuthService>();
     var controller2 = Get.find<HomeController>();
     var controller3 = Get.put(MessageSreenController());
-    var controller7 = Get.put(ChatController());
+    var controller7 = Get.find<ChatService>();
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +44,8 @@ class MessageScreen extends StatelessWidget {
                     CircleAvatar(
                       radius: 25,
                       backgroundColor: Search_Constant.COLORBLUEKA,
-                      backgroundImage: controller2.profileModel.first.Image != ""
+                      backgroundImage: controller2.profileModel.first.Image !=
+                              ""
                           ? NetworkImage(controller2.profileModel.first.Image)
                           : const NetworkImage("https://picsum.photos/200"),
                     ),
@@ -86,7 +87,7 @@ class MessageScreen extends StatelessWidget {
   }
 
   Widget listTile(MessageSreenController controller3, int index,
-      AuthService controller, ChatController controller6) {
+      AuthService controller, ChatService controller6) {
     return Dismissible(
       background: Container(
           child: Row(
@@ -185,7 +186,7 @@ class MessageScreen extends StatelessWidget {
 
   FutureBuilder<dynamic> futureBuild(StatusService controller,
       MessageSreenController controller2, AuthService controller3) {
-    var chatController = Get.find<ChatController>();
+    var chatController = Get.find<ChatService>();
     return FutureBuilder(
       future: chatController
           .filterProfiles(controller2.messageOpenController.value.text),
@@ -212,6 +213,7 @@ class MessageScreen extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.w500),
                       ),
                       onTap: () async {
+                        Get.back();
                         await chatController.startConversations(profile);
                       }),
                 )
