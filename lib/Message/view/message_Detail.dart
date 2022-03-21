@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:psikoz_me/Home/View/homePage.dart';
 import 'package:psikoz_me/Message/controller/messageController.dart';
 
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
@@ -32,7 +33,7 @@ class _CheatDetailState extends State<CheatDetail> {
     super.initState();
     _ref = controller.firestore
         .collection("Chat/${widget.chatModel.docId}/messages");
-           debugPrint(widget.chatModel.docId.toString());
+    debugPrint(widget.chatModel.docId.toString());
   }
 
   @override
@@ -178,6 +179,7 @@ class _CheatDetailState extends State<CheatDetail> {
                     child: InkWell(
                         onTap: () async {
                           debugPrint(widget.chatModel.docId.toString());
+                         // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
                           await controller.firestore
                               .collection(
                                   "Chat/${widget.chatModel.docId}/messages")

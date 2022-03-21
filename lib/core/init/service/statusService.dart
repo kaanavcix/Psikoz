@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
 import 'package:psikoz_me/Profile/view/model/profile_model.dart';
-import 'package:psikoz_me/Search/controller/searchController.dart';
+
 import 'package:psikoz_me/core/init/service/AuthService.dart';
 
 import 'package:psikoz_me/core/init/service/stroageService.dart';
@@ -19,7 +19,6 @@ class StatusService extends GetxService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final _storageService = Get.find<StroageService>();
   final autService = Get.find<AuthService>();
-  final searchController = Get.put(SearchController());
 
   late CollectionReference collectionreference;
   late CollectionReference collectionreferenceComment;
@@ -137,6 +136,8 @@ class StatusService extends GetxService {
   Future<void> deleteData(String docId) async {
     var ref = await collectionreference.doc(docId).delete();
     return ref;
+
+    
   }
 
   
@@ -202,16 +203,7 @@ class StatusService extends GetxService {
   }
 
 // search
-  getUsers() async {
-    var ref = firestore
-        .collection("Person")
-        .where("username",
-            isGreaterThanOrEqualTo: searchController.searchControl.value.text)
-        .get();
-
-    return ref;
-  }
-
+  
   Future<void> takeAndRemoveSave(var postId, List saves, var uid) async {
     try {
       if (saves.contains(uid)) {

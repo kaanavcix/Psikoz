@@ -10,7 +10,7 @@ import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
-
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fluttericon/octicons_icons.dart';
 import 'package:psikoz_me/core/init/service/AuthService.dart';
@@ -78,7 +78,6 @@ class ProfileScreen extends StatelessWidget {
   }
 
   SliverAppBar profileappbar() {
-    var controller2 = Get.find<AuthService>();
     var controller = Get.find<HomeController>();
 
     return SliverAppBar(
@@ -95,44 +94,45 @@ class ProfileScreen extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(60),
                     topLeft: Radius.circular(60))),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          Get.to(const SettingsScreen());
-                        },
-                        icon: const Icon(Icons.more_vert))
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                designProfile(),
-                const SizedBox(height: 20),
-                Obx(
-                  () => name(),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [],
-                )
-              ],
+            child: Obx(
+              () => Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Get.to(const SettingsScreen());
+                          },
+                          icon: const Icon(Icons.more_vert))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  designProfile(controller),
+                  const SizedBox(height: 20),
+                  name(),
+                  Text(
+                    controller.profileModel.first.degree,
+                    style: Login_Constants.NUNITOTEXT_STYLE
+                        .copyWith(color: Colors.grey, fontSize: 12),
+                  )
+                ],
+              ),
             )),
       ),
     );
   }
 
   Row name() {
-    var controller = Get.put(HomeController());
+    var controller = Get.find<HomeController>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
@@ -147,7 +147,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget designProfile() {
+  Widget designProfile(HomeController controller) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,17 +160,30 @@ class ProfileScreen extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        like()
+        like(controller)
       ],
     );
   }
 
-  Column like() {
+  Column like(HomeController controller) {
+    final children = <Widget>[];
+    final children2 = <Widget>[];
+    var num = int.parse(controller.profileModel.first.degreeNumber);
+
+    for (var i = 1; i < num; i++) {
+      if (i <= 2) {
+        children.add(Icon(FontAwesome5.star, size: 14));
+      } else if (i < 6) {
+        children2.add(Icon(FontAwesome5.star, size: 14));
+      }
+    }
+    children.add(Icon(FontAwesome5.star, size: 14));
     return Column(
       children: [
-        Text("0", style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK),
+        Row(children: children),
+        Row(children: children2),
         Text(
-          "Beğeni",
+          "Derece",
           style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK
               .copyWith(fontSize: 12),
         ),
@@ -181,8 +194,8 @@ class ProfileScreen extends StatelessWidget {
   Column fallow() {
     var controller = Get.find<HomeController>();
     return Column(children: [
-      Text("${controller.profileModel.first.Fallow.length}",
-          style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK),
+      Text("${controller.profileModel.first.fallow.length}",
+          style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK.copyWith(fontSize: 14)),
       Text(
         "Takipçi",
         style:
@@ -199,7 +212,7 @@ class ProfileScreen extends StatelessWidget {
             .then((value) => Get.back()),
         child: Obx(() => CircleAvatar(
             radius: 75,
-            child: controller2.profileModel.first.Image == " "
+            child: controller2.profileModel.first.image == " "
                 ? CircleAvatar(
                     radius: 75,
                     child: SvgPicture.asset(Login_Constants.LOGO_IMAGE2_SVG),
@@ -207,7 +220,7 @@ class ProfileScreen extends StatelessWidget {
                 : CircleAvatar(
                     radius: 75,
                     backgroundImage:
-                        NetworkImage(controller2.profileModel.first.Image)))));
+                        NetworkImage(controller2.profileModel.first.image)))));
   }
 
   Container profilePicture() {
@@ -242,17 +255,19 @@ class ProfileScreen extends StatelessWidget {
         var data = controller.post6[index];
 
         return CardPost(
-            time: data.time,
-            title: data.PostText,
-            username: data.username,
-            MediaUrl: data.image,
-            OnLong: () => Get.to(const ImageZoomOut(), arguments: data.image),
-            profileUrl: data.profileurl,
-            tag: data.tag,
-            postId: data.DocId,
-            UserUid: controller2.auth.currentUser!.uid,
-            likes: data.likes,
-            Saves: data.saves,uid: data.uid,);
+          time: data.time,
+          title: data.PostText,
+          username: data.username,
+          MediaUrl: data.image,
+          OnLong: () => Get.to(const ImageZoomOut(), arguments: data.image),
+          profileUrl: data.profileurl,
+          tag: data.tag,
+          postId: data.DocId,
+          UserUid: controller2.auth.currentUser!.uid,
+          likes: data.likes,
+          Saves: data.saves,
+          uid: data.uid,
+        );
       },
       itemCount: controller.post6.length,
     );

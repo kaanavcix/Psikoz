@@ -99,10 +99,10 @@ class ChatService extends GetxService {
     return data;
   }
 
-  Future filterProfiles(String filter) async {
+   filterProfiles(String filter) async {
     var ref = firestore
         .collection("Person")
-        .where("username", isGreaterThanOrEqualTo: filter);
+        .where("username", isLessThanOrEqualTo: filter);
 
     var docuref = ref.get();
 

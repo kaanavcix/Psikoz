@@ -7,4 +7,5 @@ class MessageConstants {
   static final USERTITLE = GoogleFonts.roboto(fontWeight: FontWeight.bold);
   static const PICTURESVG = "assets/images/resim.svg";
   static String HOSGELDINIZ = "Hoşgeldiniz";
+
 }

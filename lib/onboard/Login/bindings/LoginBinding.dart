@@ -8,7 +8,7 @@ class LoginControllerBinding implements Bindings {
   @override
   void dependencies() {
     Get.put<LoginController>(
-      LoginController(),
+      LoginController(),permanent: true
     );
   }
 }

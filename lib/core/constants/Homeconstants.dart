@@ -11,5 +11,10 @@ class HomeConstant {
     fontWeight: FontWeight.bold,
   );
 
+  static Color DIVIDERCOLOR = Color.fromRGBO(122, 143, 166, 1.0);
+
+  static TextStyle BLUEPOPI =
+      GoogleFonts.poppins(color: DIVIDERCOLOR);
+
   static String TREND = "Trend";
 }

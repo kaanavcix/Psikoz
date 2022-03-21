@@ -17,6 +17,7 @@ class SearchController extends GetxController {
   var fallow = [].obs;
   var isFollowing = false.obs;
   var fallowNumber = 0.obs;
+  var degreeNumber = "".obs;
 
   TextEditingController searchControl = TextEditingController();
 
@@ -54,6 +55,7 @@ class SearchController extends GetxController {
       fallow.value = value.data()!["Fallow"];
       fallowNumber.value = value.data()!["Fallow"].length;
       isFollowing.value = fallow.contains(controller2.auth.currentUser!.uid);
+      degreeNumber.value = value.data()!["degreeNumber"];
     });
 
     return ref;

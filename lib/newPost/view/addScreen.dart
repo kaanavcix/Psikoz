@@ -125,7 +125,7 @@ class AddScreen extends StatelessWidget {
                                     controller.dateFormat.value,
                                     controller.switchValue.value == true
                                         ? ""
-                                        : controller3.profileModel.first.Image,
+                                        : controller3.profileModel.first.image,
                                     controller.selectedValue.value,
                                     0,
                                   )
@@ -155,7 +155,7 @@ class AddScreen extends StatelessWidget {
                                           controller.switchValue.value == true
                                               ? ""
                                               : controller3
-                                                  .profileModel.first.Image,
+                                                  .profileModel.first.image,
                                           controller.selectedValue.value,
                                           0)
                                       .then((value) {

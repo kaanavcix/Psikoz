@@ -45,22 +45,24 @@ class SearchDetail extends StatelessWidget {
         (context, index) {
           return (controller.post4[index].tag ==
                   controller5.physcologyObject[data].name)
-              ? CardPost(
-                  OnLong: () => Get.to(const ImageZoomOut(),
-                      arguments: controller.post4[index].image),
-                  username: controller.post4[index].username,
-                  title: controller.post4[index].PostText,
-                  time: controller.post4[index].time,
-                  MediaUrl: controller.post4[index].image,
-                  profileUrl: controller.post4[index].profileurl,
-                  tag: controller.post4[index].tag,
-                   likes: controller.post4[index].likes,
-            UserUid: controller.autService.auth.currentUser!.uid,
-            postId: controller.post4[index].DocId,
-            Saves: controller.post4[index].saves,
-            uid: controller.post4[index].uid,
-           
-                )
+              ? Obx(
+                ()=> CardPost(
+                    OnLong: () => Get.to(const ImageZoomOut(),
+                        arguments: controller.post4[index].image),
+                    username: controller.post4[index].username,
+                    title: controller.post4[index].PostText,
+                    time: controller.post4[index].time,
+                    MediaUrl: controller.post4[index].image,
+                    profileUrl: controller.post4[index].profileurl,
+                    tag: controller.post4[index].tag,
+                     likes: controller.post4[index].likes,
+                          UserUid: controller.autService.auth.currentUser!.uid,
+                          postId: controller.post4[index].DocId,
+                          Saves: controller.post4[index].saves,
+                          uid: controller.post4[index].uid,
+                         
+                  ),
+              )
               : const SizedBox(height: 0);
         },
         childCount: controller.post4.length,

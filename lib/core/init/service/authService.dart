@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -14,10 +14,7 @@ class AuthService extends GetxService {
   final FirebaseAuth auth = FirebaseAuth.instance;
   late Rx<User?> firebaseUser;
   late CollectionReference collectionreference;
-  var myFallow = [].obs;
-  var myUsername = " ".obs;
-  var myUserAvatar = "".obs;
-  var mySave = [].obs;
+
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
   final _storageService = Get.find<StroageService>();
 
@@ -59,11 +56,6 @@ class AuthService extends GetxService {
 
   //Çıkış Yap
   signOut() async {
-    myUsername.value = "";
-    myUserAvatar.value = "";
-    debugPrint(myUsername.value);
-    debugPrint(myUserAvatar.value);
-
     var ref = await auth.signOut();
     return ref;
   }
@@ -80,7 +72,9 @@ class AuthService extends GetxService {
         "Email": email,
         "Image": " ",
         "Fallow": [],
-        "uid": user.user!.uid
+        "uid": user.user!.uid,
+        "degree": "PsikoEra",
+        "degreeNumber": "1"
       });
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message!, snackPosition: SnackPosition.BOTTOM);
@@ -109,26 +103,7 @@ class AuthService extends GetxService {
     return null;
   }
 
-  Future<UserCredential?> getUserCurrentData() async {
-    var firebaseUser = FirebaseAuth.instance.currentUser;
-    if (firebaseUser != null) {
-      await _fireStore
-          .collection("Person")
-          .doc(firebaseUser.uid)
-          .get()
-          .then((ds4) {
-        myUsername.value = ds4.data()!["username"];
-        myUserAvatar.value =
-            ds4.data()!["Image"] ?? "https://picsum.photos/200";
-        myFallow.value = ds4.data()!["Fallow"] ?? [];
-        //mySave.value = ds4.data()!["Save"] ?? [];
-      });
-    }
-    return null;
-  }
-
   deleteChat(String docId) async {
     await _fireStore.collection("Chat").doc(docId).delete();
-    await _fireStore.collection("Chat").doc(docId).collection("Message");
   }
 }

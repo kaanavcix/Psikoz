@@ -4,31 +4,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ProfileModel {
   final String id;
   final String username;
-  final String Email;
-  final dynamic Fallow;
-  final String Image;
+  final String email;
+  final dynamic fallow;
+  final String image;
+  final String degree;
   final String uid;
+  final dynamic degreeNumber;
 
   ProfileModel(
       {required this.id,
       required this.username,
-      required this.Email,
-      required this.Fallow,
-      required this.Image,
-      required this.uid});
+      required this.email,
+      required this.fallow,
+      required this.image,
+      required this.uid,
+      required this.degree,required this.degreeNumber});
 
   factory ProfileModel.fromMap(DocumentSnapshot snapshot) {
     return ProfileModel(
         id: snapshot.id,
         username: snapshot["username"],
-        Email: snapshot["Email"],
-        Fallow: snapshot["Fallow"],
-        Image: snapshot["Image"],
-        uid: snapshot["uid"]);
+        email: snapshot["Email"],
+        fallow: snapshot["Fallow"],
+        image: snapshot["Image"],
+        degree: snapshot["degree"],
+        uid: snapshot["uid"],
+        degreeNumber: snapshot["degreeNumber"]);
   }
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, username: $username, Email: $Email, Fallow: $Fallow, Image: $Image, uid: $uid)';
+    return 'ProfileModel(id: $id, username: $username, Email: $email, Fallow: $fallow, Image: $image, uid: $uid,$degree : degree)';
   }
 }

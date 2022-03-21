@@ -44,9 +44,9 @@ class MessageScreen extends StatelessWidget {
                     CircleAvatar(
                       radius: 25,
                       backgroundColor: Search_Constant.COLORBLUEKA,
-                      backgroundImage: controller2.profileModel.first.Image !=
+                      backgroundImage: controller2.profileModel.first.image !=
                               ""
-                          ? NetworkImage(controller2.profileModel.first.Image)
+                          ? NetworkImage(controller2.profileModel.first.image)
                           : const NetworkImage("https://picsum.photos/200"),
                     ),
                     const SizedBox(
@@ -81,6 +81,7 @@ class MessageScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               return listTile(controller3, index, controller, controller7);
             },
+           
           ))),
       floatingActionButton: newMesageFAB(),
     );
@@ -88,32 +89,34 @@ class MessageScreen extends StatelessWidget {
 
   Widget listTile(MessageSreenController controller3, int index,
       AuthService controller, ChatService controller6) {
-    return Dismissible(
-      background: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
-              Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-            ],
-          ),
-          color: Colors.red),
-      key: ValueKey(controller6.chat[index]),
-      onDismissed: (DismissDirection dismissDirection) =>
-          controller.deleteChat(controller6.chat[index].docId),
-      child: ListTile(
-        leading: CircleAvatar(
-            backgroundImage:
-                NetworkImage(controller6.chat[index].profileImage)),
-        title: Text(controller6.chat[index].name),
-        onTap: () => Get.to(
-            CheatDetail(
-                chatModel: controller6.chat[index],
-                userId: controller.auth.currentUser!.uid),
-            arguments: controller6.chat[index]),
+    return Card(
+      child: Dismissible(
+        background: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+            color: Colors.red),
+        key: ValueKey(controller6.chat[index]),
+        onDismissed: (DismissDirection dismissDirection) =>
+            controller.deleteChat(controller6.chat[index].docId),
+        child: ListTile(
+          leading: CircleAvatar(
+              backgroundImage:
+                  NetworkImage(controller6.chat[index].profileImage),radius: 23),
+          title: Text(controller6.chat[index].name,style: MessageConstants.USERTITLE.copyWith(fontWeight: FontWeight.w500)),
+          onTap: () => Get.to(
+              CheatDetail(
+                  chatModel: controller6.chat[index],
+                  userId: controller.auth.currentUser!.uid),
+              arguments: controller6.chat[index]),
+        ),
       ),
     );
   }
@@ -180,7 +183,7 @@ class MessageScreen extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(child: futureBuild(controller2, controller, authcontrol))
+          Expanded(child:  futureBuild(controller2, controller, authcontrol))
         ]));
   }
 

@@ -10,12 +10,12 @@ import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:get/get.dart';
-
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:psikoz_me/core/constants/search_constants.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:psikoz_me/core/init/service/authService.dart';
+import 'package:psikoz_me/core/init/service/AuthService.dart';
 import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class SearchProfile extends StatelessWidget {
@@ -90,7 +90,7 @@ class SearchProfile extends StatelessWidget {
     var controller4 = Get.find<StatusService>();
     return SliverAppBar(
       pinned: false,
-      expandedHeight: Get.height * 0.44,
+      expandedHeight: Get.height * 0.47,
       backgroundColor: Search_Constant.COLORBLUEKA,
       floating: false,
       snap: false,
@@ -104,8 +104,9 @@ class SearchProfile extends StatelessWidget {
                       topRight: Radius.circular(60),
                       topLeft: Radius.circular(60))),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
                     height: 15,
@@ -113,7 +114,7 @@ class SearchProfile extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  Obx(() => designProfile()),
+                  Obx(() => designProfile(controller3)),
                   const SizedBox(height: 20),
                   Obx(
                     () => name(),
@@ -181,7 +182,7 @@ class SearchProfile extends StatelessWidget {
     );
   }
 
-  Widget designProfile() {
+  Widget designProfile(SearchController controller) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -193,19 +194,32 @@ class SearchProfile extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        trend()
+        like(controller)
       ],
     );
   }
 
-  Column trend() {
+  Column like(SearchController controller) {
+    final children = <Widget>[];
+    final children2 = <Widget>[];
+    var num = int.parse(controller.degreeNumber.value);
+
+    for (var i = 1; i < num; i++) {
+      if (i <= 2) {
+        children.add(Icon(FontAwesome5.star, size: 14));
+      } else if (i < 6) {
+        children2.add(Icon(FontAwesome5.star, size: 14));
+      }
+    }
+    children.add(Icon(FontAwesome5.star, size: 14));
     return Column(
       children: [
-        Text("0", style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK),
+        Row(children: children),
+        Row(children: children2),
         Text(
-          "Beğeni",
+          "Derece",
           style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK
-              .copyWith(fontSize: 16),
+              .copyWith(fontSize: 12),
         ),
       ],
     );

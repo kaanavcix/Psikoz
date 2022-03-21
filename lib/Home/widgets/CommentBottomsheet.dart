@@ -5,7 +5,7 @@ import 'package:psikoz_me/Home/widgets/bottomComment.dart';
 import 'package:psikoz_me/core/components/card/comment_card.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:fluttericon/typicons_icons.dart';
 import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class CommentSheet extends StatelessWidget {
@@ -24,7 +24,7 @@ class CommentSheet extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Column(children: [
-        const Icon(FontAwesome5.grip_lines),
+        const Icon(Typicons.minus),
         Expanded(
           child: StreamBuilder(
             stream: FirebaseFirestore.instance
@@ -40,6 +40,7 @@ class CommentSheet extends StatelessWidget {
                 );
               }
               return ListView.builder(
+                 physics: BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return CommentCard(
                     snap: snapshot.data!.docs[index],

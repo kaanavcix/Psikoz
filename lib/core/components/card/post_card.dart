@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Home/Controller/homeController.dart';
-import 'package:psikoz_me/Home/View/Natificounts.dart';
 import 'package:psikoz_me/Home/widgets/CommentBottomsheet.dart';
 import 'package:psikoz_me/core/constants/bottombar_constant.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
@@ -30,7 +29,8 @@ class CardPost extends StatelessWidget {
       required this.postId,
       required this.UserUid,
       required this.likes,
-      required this.Saves,required this.uid})
+      required this.Saves,
+      required this.uid})
       : super(key: key);
 
   String title;
@@ -95,11 +95,11 @@ class CardPost extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(username,
-                                  style: Login_Constants.NUNITOTEXT_STYLE),
+                                  style: Login_Constants.POPPINS_STYLE,),
                               Text(
                                 time,
-                                style: Login_Constants.NUNITOTEXT_STYLE_W700
-                                    .copyWith(color: Colors.black),
+                                style: Login_Constants.POPPINS_STYLE
+                                    .copyWith(color: Colors.grey,fontSize: 11),
                               ),
                             ],
                           ),
@@ -119,18 +119,36 @@ class CardPost extends StatelessWidget {
                               ? Icon(
                                   Octicons.saved,
                                   color: BottomBar_Constant.COLORGREENKA,
-                                  size: 20,
+                                  size: 18,
                                 )
                               : const Icon(
                                   Octicons.unsaved,
                                   color: Colors.grey,
-                                  size: 20,
+                                  size: 18,
                                 );
                         }),
                     IconButton(
                         onPressed: () {
-                          Get.bottomSheet(
-                              BottomSheetDelete(controller, controller3));
+                          Get.defaultDialog(barrierDismissible: true,title: "Daha Fazlası",titleStyle: Login_Constants.NUNITOTEXT_STYLE.copyWith(fontSize: 14),
+                              content: Column(children: [
+                            uid == controller2.auth.currentUser!.uid
+                                ? ListTile(
+                                    onTap: () => controller3
+                                            .deleteData(postId)
+                                            .then((value) {
+                                          Get.back();
+                                          Get.snackbar(
+                                              "Silindi", "Postunuz Silindi",
+                                              backgroundColor: Colors.red,
+                                              snackPosition:
+                                                  SnackPosition.BOTTOM);
+                                        }),
+                                    trailing: const Icon(
+                                      Icons.delete,
+                                    ),
+                                    title: Text("Dökümanı Siliniz",style: Login_Constants.NUNITOTEXT_STYLE.copyWith(fontSize: 14), ))
+                                : const Text("data")
+                          ]));
                         },
                         icon: const Icon(Icons.more_horiz_rounded))
                   ],
@@ -138,7 +156,7 @@ class CardPost extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: Text(
-                    title,
+                    title,style: Login_Constants.POPPINS_STYLE.copyWith(color: Colors.grey.shade900,fontSize: 11,fontWeight: FontWeight.normal),
                     softWrap: true,
                   ),
                 ),
@@ -170,12 +188,12 @@ class CardPost extends StatelessWidget {
                               ? Icon(
                                   Icons.favorite,
                                   color: BottomBar_Constant.COLORBLUEKA,
-                                  size: 30,
+                                  size: 25,
                                 )
                               : const Icon(
                                   Icons.favorite_border_outlined,
                                   color: Colors.grey,
-                                  size: 30,
+                                  size: 25,
                                 );
                         }),
                     IconButton(
@@ -189,15 +207,17 @@ class CardPost extends StatelessWidget {
                         icon: const Icon(
                           MfgLabs.comment,
                           color: Colors.grey,
+                          size: 23,
                         )),
                     const Spacer(),
                     Row(
                       children: [
-                        Text(tag),
+                        Text(tag,style: Login_Constants.POPPINS_STYLE.copyWith(fontSize: 10,color: Colors.black45),),
                         const SizedBox(width: 3),
                         const Icon(
                           Elusive.tag,
                           size: 15,
+                          color: Colors.black87,
                         ),
                       ],
                     )
@@ -212,7 +232,7 @@ class CardPost extends StatelessWidget {
   Widget BottomSheetDelete(
       HomeController controller, StatusService controller2) {
     return Padding(
-      padding: EdgeInsets.only(left: 15, right: 15),
+      padding: const EdgeInsets.only(left: 15, right: 15),
       child: Container(
         height: Get.height * 0.3,
         decoration: BoxDecoration(

@@ -37,9 +37,9 @@ class PostIngerident extends StatelessWidget {
                           child: CircleAvatar(
                             radius: 18,
                             backgroundColor: BottomBar_Constant.COLORBLUEKA,
-                            backgroundImage: controller4.profileModel.first.Image !=
+                            backgroundImage: controller4.profileModel.first.image !=
                                     " "
-                                ? NetworkImage(controller4.profileModel.first.Image)
+                                ? NetworkImage(controller4.profileModel.first.image)
                                 : const NetworkImage("https://picsum.photos/200"),
                           ),
                         ),

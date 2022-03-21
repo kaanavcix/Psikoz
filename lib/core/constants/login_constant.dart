@@ -29,7 +29,8 @@ class Login_Constants {
   static TextStyle NUNITOTEXT_STYLE_W700 = GoogleFonts.nunito(
       textStyle: const TextStyle(
           fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white));
-
+static TextStyle POPPINS_STYLE = GoogleFonts.poppins(
+      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600));
   static BoxDecoration BOXDECORATION = BoxDecoration(
       boxShadow: const [
         BoxShadow(blurRadius: 1, spreadRadius: 0.4, color: Colors.white)
