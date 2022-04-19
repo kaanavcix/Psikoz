@@ -3,18 +3,23 @@ import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/Home/View/image_zoomout.dart';
 import 'package:psikoz_me/Profile/controller/profileController.dart';
 import 'package:psikoz_me/Profile/view/settings.dart';
+import 'package:psikoz_me/Search/view/searchProfile.dart';
+import 'package:psikoz_me/core/components/ThemeConstant.dart';
 import 'package:psikoz_me/core/components/card/post_card.dart';
-import 'package:psikoz_me/core/constants/bottombar_constant.dart';
+import 'package:psikoz_me/core/constants/ColorPallette.dart';
+import 'package:psikoz_me/core/constants/CommonTextConstant.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:psikoz_me/core/constants/search_constants.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fluttericon/octicons_icons.dart';
 import 'package:psikoz_me/core/init/service/AuthService.dart';
+import 'package:psikoz_me/core/init/service/chatService.dart';
 import 'package:psikoz_me/core/init/service/statusService.dart';
+import 'package:psikoz_me/core/theme/color_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -22,10 +27,7 @@ class ProfileScreen extends StatelessWidget {
 //bunları parçalamayı unutma ve backend state management
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        //appBar: TopAppBar(),
-        backgroundColor: Colors.white,
-        body: profilePage());
+    return Scaffold(body: profilePage());
   }
 
   DefaultTabController profilePage() {
@@ -54,26 +56,21 @@ class ProfileScreen extends StatelessWidget {
             ])));
   }
 
-  TabBar tabTwoItem() {
+  Widget tabTwoItem() {
     return TabBar(
+        labelColor: Colors.white,
         indicator: BoxDecoration(border: Border.all(style: BorderStyle.none)),
         indicatorColor: Colors.black,
-        indicatorPadding: const EdgeInsets.all(10),
+        //indicatorPadding: const EdgeInsets.all(10),
         tabs: [
           Tab(
             icon: CircleAvatar(
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.transparent,
                 radius: 15,
-                child: SvgPicture.asset(
-                  Login_Constants.LOGO_IMAGE2_SVG,
-                  color: BottomBar_Constant.COLORBLUEKA,
-                )),
+                child: SvgPicture.asset(LoginConstants.LOGO_IMAGE2_SVG,
+                    color: ColorPallete.BLUECOLOR)),
           ),
-          Tab(
-              icon: Icon(
-            Octicons.saved,
-            color: Search_Constant.COLORGREENKA,
-          ))
+          Tab(icon: Icon(Octicons.saved, color: ColorPallete.PURPLECOLOR))
         ]);
   }
 
@@ -83,36 +80,32 @@ class ProfileScreen extends StatelessWidget {
     return SliverAppBar(
       pinned: false,
       expandedHeight: Get.height * 0.45,
-      backgroundColor: BottomBar_Constant.COLORBLUEKA,
       floating: false,
       snap: false,
-      elevation: 2,
+      elevation: 0,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(60),
-                    topLeft: Radius.circular(60))),
+            decoration: BoxDecoration(
+              color: Get.isDarkMode?AppColor.bodyColorDark: Colors.white,
+            ),
             child: Obx(
               () => Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
                     height: 15,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
+                  Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
                           onPressed: () {
                             Get.to(const SettingsScreen());
                           },
-                          icon: const Icon(Icons.more_vert))
-                    ],
-                  ),
+                          icon:  Icon(
+                            Icons.more_vert,
+                            color: ThemeConstant.textField,
+                          ))),
                   const SizedBox(
                     height: 30,
                   ),
@@ -121,7 +114,7 @@ class ProfileScreen extends StatelessWidget {
                   name(),
                   Text(
                     controller.profileModel.first.degree,
-                    style: Login_Constants.NUNITOTEXT_STYLE
+                    style: LoginConstants.NUNITOTEXT_STYLE
                         .copyWith(color: Colors.grey, fontSize: 12),
                   )
                 ],
@@ -141,7 +134,7 @@ class ProfileScreen extends StatelessWidget {
           controller.profileModel.first.username,
           textAlign: TextAlign.start,
           style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK
-              .copyWith(fontSize: 25),
+              .copyWith(fontSize: 25, color: ThemeConstant.textField),
         ),
       ],
     );
@@ -154,11 +147,11 @@ class ProfileScreen extends StatelessWidget {
       children: [
         fallow(),
         const SizedBox(
-          width: 10,
+          width: 8,
         ),
         profileCircle(),
         const SizedBox(
-          width: 10,
+          width: 8,
         ),
         like(controller)
       ],
@@ -172,20 +165,23 @@ class ProfileScreen extends StatelessWidget {
 
     for (var i = 1; i < num; i++) {
       if (i <= 2) {
-        children.add(Icon(FontAwesome5.star, size: 14));
+        children.add(
+            Icon(FontAwesome5.star, color: ThemeConstant.textField, size: 12));
       } else if (i < 6) {
-        children2.add(Icon(FontAwesome5.star, size: 14));
+        children2.add(
+            Icon(FontAwesome5.star, color: ThemeConstant.textField, size: 12));
       }
     }
-    children.add(Icon(FontAwesome5.star, size: 14));
+    children
+        .add(Icon(FontAwesome5.star, color: ThemeConstant.textField, size: 12));
     return Column(
       children: [
-        Row(children: children),
         Row(children: children2),
+        Row(children: children),
         Text(
           "Derece",
           style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK
-              .copyWith(fontSize: 12),
+              .copyWith(fontSize: 12, color: ThemeConstant.textField),
         ),
       ],
     );
@@ -194,12 +190,13 @@ class ProfileScreen extends StatelessWidget {
   Column fallow() {
     var controller = Get.find<HomeController>();
     return Column(children: [
-      Text("${controller.profileModel.first.fallow.length}",
-          style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK.copyWith(fontSize: 14)),
+      Text("${controller.profileModel.first.follow.length}",
+          style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK
+              .copyWith(fontSize: 14, color: ThemeConstant.textField)),
       Text(
-        "Takipçi",
-        style:
-            ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK.copyWith(fontSize: 12),
+        CommonTextConstants.TAKIPCI,
+        style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK
+            .copyWith(fontSize: 12, color: ThemeConstant.textField),
       )
     ]);
   }
@@ -215,7 +212,7 @@ class ProfileScreen extends StatelessWidget {
             child: controller2.profileModel.first.image == " "
                 ? CircleAvatar(
                     radius: 75,
-                    child: SvgPicture.asset(Login_Constants.LOGO_IMAGE2_SVG),
+                    child: SvgPicture.asset(LoginConstants.LOGO_IMAGE2_SVG),
                   )
                 : CircleAvatar(
                     radius: 75,
@@ -223,38 +220,22 @@ class ProfileScreen extends StatelessWidget {
                         NetworkImage(controller2.profileModel.first.image)))));
   }
 
-  Container profilePicture() {
-    return Container(
-      width: 120,
-      height: 120,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.black,
-      ),
-      child: Container(
-        alignment: Alignment.center,
-        height: 100,
-        width: 100,
-        child: SvgPicture.asset(Login_Constants.LOGO_IMAGE2_SVG, height: 100),
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(color: Colors.white, blurRadius: 0.4, spreadRadius: 1)
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget saveWidget() {
     var controller = Get.find<StatusService>();
     var controller2 = Get.find<AuthService>();
-
+    var messageController = Get.find<ChatService>();
     return ListView.builder(
       itemBuilder: (context, index) {
         var data = controller.post6[index];
 
         return CardPost(
+          onMessage: () => messageController
+              .startConversations(messageController.ilterProfiles(data.uid)),
+          degree: data.degree,
+          onTap: () => Get.to(
+            const SearchProfile(),
+            arguments: data.uid,
+          ),
           time: data.time,
           title: data.PostText,
           username: data.username,
@@ -276,8 +257,8 @@ class ProfileScreen extends StatelessWidget {
   Widget postWidget() {
     var controller = Get.put(StatusService());
     debugPrint(controller.post5.length.toString());
-
-    return ListView.separated(
+    var messageController = Get.find<ChatService>();
+    return ListView.builder(
       itemCount: controller.post5.length,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
@@ -285,6 +266,13 @@ class ProfileScreen extends StatelessWidget {
           var data = controller.post5[index];
 
           return CardPost(
+            onMessage: () => messageController
+                .startConversations(messageController.ilterProfiles(data.uid)),
+            degree: data.degree,
+            onTap: () => Get.to(
+              const SearchProfile(),
+              arguments: data.uid,
+            ),
             time: data.time,
             title: data.PostText,
             username: data.username,
@@ -300,22 +288,23 @@ class ProfileScreen extends StatelessWidget {
           );
         }));
       },
-      separatorBuilder: (BuildContext context, int index) {
-        return const Divider();
-      },
     );
   }
 
   Container bottomSheet(ProfileController controller) {
     return Container(
-      height: 150,
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+      height: 200,
+      decoration: BoxDecoration(
+          color: ThemeConstant.logoMode,
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20))),
       child: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Column(children: [
+          const Align(
+            alignment: Alignment.topCenter,
+            child: Icon(Icons.linear_scale_outlined),
+          ), // ayarlıcam
           ListTile(
             onTap: (() => controller
                 .getImage(ImageSource.camera)
@@ -330,6 +319,16 @@ class ProfileScreen extends StatelessWidget {
             leading: const Icon(Icons.photo_album),
             title: const Text("Album"),
           ),
+          controller.controllerd.profileModel.first.image != " "
+              ? ListTile(
+                  onTap: () => controller.controller2.firestore
+                      .collection("Person")
+                      .doc(controller.controller.auth.currentUser!.uid)
+                      .set({"Image": " "}, SetOptions(merge: true)).then(
+                          (value) => Get.back()),
+                  leading: const Icon(Icons.delete),
+                  title: const Text("Kaldır"))
+              : const SizedBox()
         ]),
       ),
     );

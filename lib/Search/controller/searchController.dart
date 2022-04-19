@@ -5,18 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:psikoz_me/Search/view/model/searchMode.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:psikoz_me/core/init/service/AuthService.dart';
+import 'package:psikoz_me/core/init/service/statusService.dart';
 import 'package:psikoz_me/newPost/view/models/addmodel.dart';
 
 class SearchController extends GetxController {
   late List<PhyscologyObject> physcologyObject;
   var controller = Get.put(Variable());
   var controller2 = Get.find<AuthService>();
+    var controller3 = Get.find<StatusService>();
+
   var isShowed = false.obs;
   var username = "".obs;
   var image = "".obs;
-  var fallow = [].obs;
+  var follow = [].obs;
   var isFollowing = false.obs;
-  var fallowNumber = 0.obs;
+  var followNumber = 0.obs;
   var degreeNumber = "".obs;
 
   TextEditingController searchControl = TextEditingController();
@@ -52,10 +55,11 @@ class SearchController extends GetxController {
         .then((value) {
       username.value = value.data()!["username"];
       image.value = value.data()!["Image"];
-      fallow.value = value.data()!["Fallow"];
-      fallowNumber.value = value.data()!["Fallow"].length;
-      isFollowing.value = fallow.contains(controller2.auth.currentUser!.uid);
+      follow.value = value.data()!["Follow"];
+      followNumber.value = value.data()!["Follow"].length;
+      isFollowing.value = follow.contains(controller2.auth.currentUser!.uid);
       degreeNumber.value = value.data()!["degreeNumber"];
+
     });
 
     return ref;
@@ -66,7 +70,7 @@ class SearchController extends GetxController {
         .collection("Status")
         .where("username", isEqualTo: username.value)
         .snapshots()
-        .map((event) => event.docs.map((e) => Post2.fromMap(e)).toList());
+        .map((event) => event.docs.map((e) => Post2.fromMap(e,)).toList());
     return ref;
   }
 }

@@ -13,25 +13,31 @@ class HomeController extends GetxController {
   TextEditingController commentControl = TextEditingController();
   var isSave = false.obs;
 
-  RxList<ProfileModel> profileModel = RxList<ProfileModel>();
+  RxList<ProfileModel2> profileModel = RxList<ProfileModel2>();
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     profileModel.bindStream(controller.getCurrentData());
+    
+    
   }
-
+ 
   @override
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-    
+    getUidForPost();
   }
 
-  void mewthod() {
-    var messagee = profileModel.first.username;
-    debugPrint(messagee);
+  getUidForPost() {
+    var ref = controller.collectionreference
+        //.where("uid", whereIn: profileModel.first.following)
+        .snapshots()
+        .map((event) => event.docs.map((e) => Post2.fromMap(e)).toList());
+
+    debugPrint(ref.toString());
   }
 
   Stream<List<Post3>> getCustomPost() {

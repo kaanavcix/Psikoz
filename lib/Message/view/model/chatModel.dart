@@ -10,6 +10,7 @@ class ChatModel {
   String name;
   String profileImage;
   String displayMessage;
+  
   ChatModel(
       {required this.docId,
       required this.name,

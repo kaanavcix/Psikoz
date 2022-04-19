@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Profile/settings/anonim.dart';
+import 'package:psikoz_me/Profile/settings/profileSet.dart';
 import 'package:psikoz_me/Profile/view/model/settingsNames.dart';
-import 'package:psikoz_me/core/constants/bottombar_constant.dart';
+import 'package:psikoz_me/core/constants/ColorPallette.dart';
+
 import 'package:psikoz_me/core/constants/profile_constans.dart';
-import 'package:psikoz_me/core/constants/search_constants.dart';
+
 import 'package:psikoz_me/core/init/service/AuthService.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -15,18 +17,16 @@ class SettingsScreen extends StatelessWidget {
     var controller = Get.find<AuthService>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
         title: Text(ProfileConstants.SETTINGS_TEXT,
-            style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK),
+            style:Get.theme.textTheme.subtitle1),
         leading: IconButton(
             onPressed: () {
               Get.back();
             },
             icon: const Icon(
               Icons.arrow_back,
-              color: Colors.black,
             )),
       ),
       body: Column(
@@ -36,9 +36,13 @@ class SettingsScreen extends StatelessWidget {
             children: [
               Card(
                 child: ListTile(
-                  
                   title: const Text("Anonim Gönderiler"),
                   onTap: () => Get.to(()=>AnonimPage()),
+                ),
+              ), Card(
+                child: ListTile(
+                  title: const Text("Anonim Profil"),
+                  onTap: () => Get.to(()=>ProfileSet()),
                 ),
               ),
          
@@ -72,7 +76,7 @@ class SettingsScreen extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             gradient: LinearGradient(
-                colors: BottomBar_Constant.LINEARGRADIENT_COLOR,
+                colors: ColorPallete.LINEARGRADIENT_COLOR,
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight),
             //color: const Color.fromRGBO(47, 187, 240, 1.0),

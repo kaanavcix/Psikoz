@@ -41,7 +41,7 @@ class PasswordInput extends StatelessWidget {
                   ),
                 ),
                 label: Text(name,
-                    style: Login_Constants.NUNITOTEXT_JUST_TEXTSIZE
+                    style: LoginConstants.NUNITOTEXT_JUST_TEXTSIZE
                         .copyWith(color: Colors.black))),
           ),
         ));

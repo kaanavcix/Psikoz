@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:psikoz_me/Message/view/message_Detail.dart';
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
 import 'package:psikoz_me/Message/view/model/profile.dart';
+import 'package:psikoz_me/Search/view/model/searchMode.dart';
 import 'package:psikoz_me/core/init/service/AuthService.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
@@ -14,7 +15,7 @@ class ChatService extends GetxService {
   @override
   void onInit() {
     super.onInit();
-    
+
     getProfiles();
   }
 
@@ -49,11 +50,7 @@ class ChatService extends GetxService {
                 (member) => member != authservice.auth.currentUser!.uid,
               ),
         );
-        return ChatModel.fromMap(
-          snapshop,
-          otherUser,
-          commentId
-        );
+        return ChatModel.fromMap(snapshop, otherUser, commentId);
       }).toList();
     });
   }
@@ -99,10 +96,19 @@ class ChatService extends GetxService {
     return data;
   }
 
-   filterProfiles(String filter) async {
+  filterProfiles(String filter) async {
     var ref = firestore
         .collection("Person")
+        .orderBy("username", descending: true)
         .where("username", isLessThanOrEqualTo: filter);
+
+    return ref
+        .get()
+        .then((value) => value.docs.map((e) => Profile.fromMap(e)).toList());
+  }
+
+  ilterProfiles(dynamic Id) async {
+    var ref = await firestore.collection("Person").where("uid", isEqualTo: Id);
 
     var docuref = ref.get();
 

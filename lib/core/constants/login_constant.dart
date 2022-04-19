@@ -2,12 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:psikoz_me/core/components/ThemeConstant.dart';
 
-class Login_Constants {
+class LoginConstants {
   static String ERROR_MESSAGE_EMAIL = "Lütfen Tekrar Giriniz";
   static String LOGIN_TEXT = "Giriş Yap";
   static String MAIL_TEXT = "E-Mail";
-  static String PASSWORD_TEXT = "Password";
+  static String PASSWORD_TEXT = "Şifre";
   static String FORGET_PASSWORD_TEXT = " Şifrenizi mi Unuttunuz ?";
   static String LOGIN_BUTTON_TEXT = LOGIN_TEXT.toUpperCase();
   static String OR_LOGIN_WITH_TEXT = "Onlarla giriş yap";
@@ -30,7 +31,7 @@ class Login_Constants {
       textStyle: const TextStyle(
           fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white));
 static TextStyle POPPINS_STYLE = GoogleFonts.poppins(
-      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600));
+      textStyle:  TextStyle(fontSize: 15, fontWeight: FontWeight.w600,color: ThemeConstant.textField));
   static BoxDecoration BOXDECORATION = BoxDecoration(
       boxShadow: const [
         BoxShadow(blurRadius: 1, spreadRadius: 0.4, color: Colors.white)

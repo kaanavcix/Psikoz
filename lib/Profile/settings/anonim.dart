@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Home/View/image_zoomout.dart';
+import 'package:psikoz_me/Search/view/searchProfile.dart';
 import 'package:psikoz_me/core/components/card/post_card.dart';
 import 'package:psikoz_me/core/init/service/AuthService.dart';
+import 'package:psikoz_me/core/init/service/chatService.dart';
 import 'package:psikoz_me/core/init/service/statusService.dart';
 
 
@@ -13,20 +15,15 @@ class AnonimPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.find<StatusService>();
     var controller2 = Get.find<AuthService>();
-
+var messageController = Get.find<ChatService>();
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: InkWell(
-          onTap: ()=>Get.back(),
-          child: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-        ),
-        title: Text("Anonim Gönderiler", style: Get.textTheme.labelLarge),
+        automaticallyImplyLeading: true,
+        
+        
+        title: Text("Anonim Gönderiler", style: Get.textTheme.labelLarge!.copyWith(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        
       ),
       body: Obx(
         ()=>ListView.builder(
@@ -34,6 +31,9 @@ class AnonimPage extends StatelessWidget {
             var data = controller.post7[index];
             return data.username.contains("Psikoz")
                 ? CardPost(
+                  onMessage: ()=> messageController.startConversations(messageController.ilterProfiles(data.uid)),
+                  degree: data.degree,
+                  onTap: () => Get.to(()=> const SearchProfile(),arguments: data.uid,),
                     time: data.time,
                     title: data.PostText,
                     username: data.username,

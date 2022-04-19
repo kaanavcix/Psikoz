@@ -71,6 +71,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.6.10"
+  cloud_functions:
+    dependency: "direct main"
+    description:
+      name: cloud_functions
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.2.10"
+  cloud_functions_platform_interface:
+    dependency: transitive
+    description:
+      name: cloud_functions_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.1"
+  cloud_functions_web:
+    dependency: transitive
+    description:
+      name: cloud_functions_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.9"
   collection:
     dependency: transitive
     description:
@@ -106,13 +127,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  easy_loading:
-    dependency: "direct dev"
-    description:
-      name: easy_loading
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4"
   fake_async:
     dependency: transitive
     description:
@@ -331,6 +345,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  im_stepper:
+    dependency: "direct dev"
+    description:
+      name: im_stepper
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.3"
   image:
     dependency: transitive
     description:

@@ -20,14 +20,14 @@ class TrendContainer extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           child: Row(
             children: [
-              SvgPicture.asset(Login_Constants.LOGO_IMAGE2_SVG,
+              SvgPicture.asset(LoginConstants.LOGO_IMAGE2_SVG,
                   color: const Color.fromARGB(255, 97, 12, 12), height: 30),
               const SizedBox(
                 width: 5,
               ),
               Text(
                 "Trend",
-                style: Login_Constants.NUNITOTEXT_STYLE.copyWith(fontSize: 14),
+                style: LoginConstants.NUNITOTEXT_STYLE.copyWith(fontSize: 14),
               )
             ],
           ),

@@ -6,9 +6,8 @@ import 'package:psikoz_me/Home/View/homePage.dart';
 import 'package:psikoz_me/Message/controller/messageController.dart';
 
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
-import 'package:psikoz_me/core/constants/bottombar_constant.dart';
+import 'package:psikoz_me/core/constants/ColorPallette.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
-import 'package:psikoz_me/core/constants/search_constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:psikoz_me/core/init/service/statusService.dart';
@@ -47,7 +46,7 @@ class _CheatDetailState extends State<CheatDetail> {
           title: Row(children: [
             CircleAvatar(
               backgroundImage: NetworkImage(widget.chatModel.profileImage),
-              backgroundColor: BottomBar_Constant.COLORBLUEKA,
+              backgroundColor: ColorPallete.BLUECOLOR
             ),
             const SizedBox(
               width: 5,
@@ -121,7 +120,7 @@ class _CheatDetailState extends State<CheatDetail> {
                               decoration: BoxDecoration(
                                 gradient: widget.userId != data["senderId"]
                                     ? LinearGradient(
-                                        colors: Search_Constant
+                                        colors: ColorPallete
                                             .LINEARGRADIENT_COLOR,
                                         begin: Alignment.centerRight,
                                         end: Alignment.centerLeft,

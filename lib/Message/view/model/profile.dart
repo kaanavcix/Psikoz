@@ -8,7 +8,7 @@ class Profile {
   Profile({
     required this.docId,
     required this.username,
-    required this.profileImage,
+    required this.profileImage
   });
   factory Profile.fromMap(DocumentSnapshot data) {
     return Profile(

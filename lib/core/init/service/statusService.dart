@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
+import 'package:psikoz_me/Message/view/model/profile.dart';
 import 'package:psikoz_me/Profile/view/model/profile_model.dart';
 
 import 'package:psikoz_me/core/init/service/AuthService.dart';
@@ -19,11 +20,11 @@ class StatusService extends GetxService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final _storageService = Get.find<StroageService>();
   final autService = Get.find<AuthService>();
-
+  var ref2;
   late CollectionReference collectionreference;
   late CollectionReference collectionreferenceComment;
   final firebaseUser = FirebaseAuth.instance.currentUser;
- 
+  var uid = "".obs;
   RxList<Post2> post4 = RxList<Post2>([]);
   RxList<Post3> post5 = RxList<Post3>([]);
   RxList<Post2> post6 = RxList<Post2>([]);
@@ -35,26 +36,26 @@ class StatusService extends GetxService {
   @override
   void onInit() {
     super.onInit();
-
+    
     collectionreference = firestore.collection("Status");
     collectionreferenceComment = firestore
         .collection("Status")
         .doc(collectionreference.id)
         .collection("comment");
+
     post4.bindStream(getAllPost());
   }
-
-
 
 //veri ekleme resimle
   Future<Post2> addPost(
     String title,
     XFile pickedImage,
     String username,
-    String time,
+    dynamic time,
     String profileurl,
     String tag,
     int likeCounter,
+    String degree,
   ) async {
     var _mediaUrl = await _storageService.uploadMedia(File(pickedImage.path));
     // ignore: prefer_conditional_assignment, unnecessary_null_comparison
@@ -71,7 +72,8 @@ class StatusService extends GetxService {
       "likeCounter": likeCounter,
       "likes": [],
       "Save": [],
-      "uid": autService.auth.currentUser!.uid
+      "uid": autService.auth.currentUser!.uid,
+      "degree": degree
     });
 
     return Post2(
@@ -84,17 +86,19 @@ class StatusService extends GetxService {
         tag: tag,
         likeCounter: likeCounter,
         likes: [],
-        saves: []);
+        saves: [],
+        degree: degree);
   }
 
   // sadece text
   Future<Post2> addText(
     String title,
     String username,
-    String time,
+    dynamic time,
     String profileurl,
     String tag,
     int likeCounter,
+    String degree,
   ) async {
     var documentRef = await collectionreference.add({
       "PostText": title,
@@ -106,7 +110,8 @@ class StatusService extends GetxService {
       "likeCounter": likeCounter,
       "likes": [],
       "Save": [],
-      "uid": autService.auth.currentUser!.uid
+      "uid": autService.auth.currentUser!.uid,
+      "degree": degree
     });
     return Post2(
         DocId: documentRef.id,
@@ -118,29 +123,32 @@ class StatusService extends GetxService {
         tag: tag,
         likeCounter: likeCounter,
         likes: [],
-        saves: [],);
+        saves: [],
+        degree: degree);
   }
 
 //veri çekme
-  Stream<List<Post2>> getAllPost() {
+  getAllPost() {
+    var ref2 =
+        collectionreference.get();
+    
     var ref = collectionreference
         .orderBy("time", descending: true)
         .snapshots()
-        .map((event) => event.docs.map((data) => Post2.fromMap(data)).toList());
+        .map((event) => event.docs
+            .map((data) => Post2.fromMap(
+                  data,
+                ))
+            .toList());
 
     return ref;
   }
 
-  
   //veri silme
   Future<void> deleteData(String docId) async {
     var ref = await collectionreference.doc(docId).delete();
     return ref;
-
-    
   }
-
-  
 
 // post liked
   likePost(String postId, String uid, List likes) {
@@ -184,7 +192,7 @@ class StatusService extends GetxService {
       Get.snackbar("Hata!", "Lütfen Yazı Yazınız",
           backgroundColor: Colors.red,
           colorText: Colors.white,
-          snackStyle: SnackStyle.FLOATING);
+          snackPosition: SnackPosition.TOP);
     }
 
     return "1";
@@ -203,17 +211,17 @@ class StatusService extends GetxService {
   }
 
 // search
-  
+
   Future<void> takeAndRemoveSave(var postId, List saves, var uid) async {
     try {
       if (saves.contains(uid)) {
         await firestore.collection("Status").doc(postId).update({
-          "Save": FieldValue.arrayRemove([uid])
+          "Save": FieldValue.arrayRemove([uid]) // array içine veri silme
         });
       } else {
         // else we need to add uid to the likes array
         await firestore.collection("Status").doc(postId).update({
-          'Save': FieldValue.arrayUnion([uid])
+          'Save': FieldValue.arrayUnion([uid]) // array içinde veri ekleme
         });
       }
     } catch (e) {
@@ -225,7 +233,9 @@ class StatusService extends GetxService {
   getSavePost() {
     var ref = firestore
         .collection("Status")
-        .where("Save", arrayContains: autService.auth.currentUser!.uid)
+        .where("Save",
+            arrayContains: autService.auth.currentUser!
+                .uid) // listenin içinde içeriyorsa eğer çekiyor
         .snapshots()
         .map((event) => event.docs.map((e) => Post2.fromMap(e)).toList());
 
@@ -246,14 +256,44 @@ class StatusService extends GetxService {
     return ref;
   }
 
-  Stream <List<ProfileModel>> getCurrentData() {
+  Stream<List<ProfileModel2>> getCurrentData() {
     var ref = firestore
         .collection("Person")
         .where("uid", isEqualTo: autService.auth.currentUser!.uid)
         .snapshots()
-        .map(
-            (event) => event.docs.map((e) => ProfileModel.fromMap(e)).toList());
+        .map((event) =>
+            event.docs.map((e) => ProfileModel2.fromMap(e)).toList());
 
     return ref;
+  }
+
+  //şifremi unuttum
+
+  Future<void>? resetPasswordSendEmailAdress(String email) async {
+    try {
+      var ref = await autService.auth.sendPasswordResetEmail(email: email);
+
+      return ref;
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar("ERROR", e.message!, backgroundColor: Colors.red);
+    } catch (e) {
+      debugPrint(e.toString());
+      Get.snackbar("ERROR", e.toString(), backgroundColor: Colors.red);
+    }
+  }
+
+  VerifyCodeForResetPassword() {}
+
+  setProfile(String name) async {
+    // random anonim isim ataması
+    Random random = Random();
+    int randomNumber = random.nextInt(10000);
+
+    var string = "$name$randomNumber";
+
+    await firestore
+        .collection("Person")
+        .doc(autService.auth.currentUser!.uid)
+        .set({"anonim": string}, SetOptions(merge: true));// bunun true olması overwrite etmesine yarıyor merge true !!!
   }
 }

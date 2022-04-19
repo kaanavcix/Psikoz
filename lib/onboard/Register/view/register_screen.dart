@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:psikoz_me/core/components/containers/Login_register_background.dart';
+import 'package:psikoz_me/core/constants/ColorPallette.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:psikoz_me/core/constants/register_constant.dart';
-import 'package:psikoz_me/core/constants/routes_constant.dart';
-import 'package:psikoz_me/core/constants/search_constants.dart';
+import 'package:psikoz_me/core/constants/RouteConstants.dart';
 import 'package:psikoz_me/core/init/service/AuthService.dart';
-
 import 'package:psikoz_me/onboard/Register/controller/registerController.dart';
 import 'package:psikoz_me/onboard/Widgets/EmailInput.dart';
 import 'package:psikoz_me/onboard/Widgets/PasswordInput.dart';
@@ -34,7 +33,11 @@ class RegisterScreen extends StatelessWidget {
               height: 13,
                 ),
                 UserInput(userController: controller.usernameController),
-                EmailInput(emailController: controller.emailController),
+                EmailInput(validator: (p0) {
+                  return p0 != null && p0.contains("@")
+                      ? "Lütfen Eposta gieiniz"
+                      : null;
+                },onFieldSubmitted: (p0) => controller.focusNode.requestFocus(),emailController: controller.emailController,),
                 PasswordInput(
               passwordController: controller.passwordControllers,
               name: Register_Constants.PASSWORD_TEXT,
@@ -73,13 +76,13 @@ class RegisterScreen extends StatelessWidget {
                   child: Container(
                       child: Center(
                         child: Text(Register_Constants.REGISTER_BUTTON_TEXT,
-                            style: Login_Constants.NUNITOTEXT_STYLE_W700),
+                            style: LoginConstants.NUNITOTEXT_STYLE_W700),
                       ),
                       width: 90,
                       height: 35,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: Search_Constant.LINEARGRADIENT_COLOR,
+                          colors: ColorPallete.LINEARGRADIENT_COLOR
                         ),
                         borderRadius: BorderRadius.circular(10),
                       ))),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Home/Controller/homeController.dart';
+import 'package:psikoz_me/core/components/ThemeConstant.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:psikoz_me/core/init/service/AuthService.dart';
 import 'package:psikoz_me/core/init/service/statusService.dart';
@@ -32,32 +33,29 @@ class BottomComment extends StatelessWidget {
               child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                    boxShadow:const  [BoxShadow(color: Color.fromARGB(255, 209, 206, 206),spreadRadius: 1,blurRadius: 1)]
+                    color: Get.isDarkMode?Colors.black:Colors.white,
+                    boxShadow:const  [BoxShadow(color: Color.fromARGB(255, 224, 222, 222),spreadRadius: 0.5,blurRadius: 0.5)]
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: TextField(
+                      style: TextStyle(color: Get.isDarkMode?Colors.white:Colors.black),
                         controller: commentControll.commentControl,
                         cursorColor: Colors.white,
                         decoration: const InputDecoration(
+                          
                             hintText: "...",
                             disabledBorder: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
                               borderSide:
-                                  BorderSide(width: 1, color: Colors.black),
+                                  BorderSide(width: 1, color: Colors.white),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                              width: 5,
-                              color: Colors.black,
-                            )))),
+                            enabledBorder: InputBorder.none,
+                            
+                            focusedBorder: InputBorder.none,
+                            
+                            )),
                   ))),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -73,9 +71,10 @@ class BottomComment extends StatelessWidget {
                       .then(
                           (value) => commentControll.commentControl.text = "");
                 },
-                child: const Icon(
+                child:  Icon(
                   Icons.send,
-                  size: 20,
+                  size: 25,
+                  color: Get.isDarkMode?Colors.white:Colors.black
                 )),
           )
         ],

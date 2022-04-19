@@ -5,7 +5,10 @@ import 'package:like_button/like_button.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/Home/widgets/CommentBottomsheet.dart';
-import 'package:psikoz_me/core/constants/bottombar_constant.dart';
+import 'package:psikoz_me/core/components/ThemeConstant.dart';
+import 'package:psikoz_me/core/constants/ColorPallette.dart';
+import 'package:psikoz_me/core/constants/ShadowConstants.dart';
+import 'package:psikoz_me/core/constants/TextThemeConstants.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:fluttericon/elusive_icons.dart';
 import 'package:fluttericon/mfg_labs_icons.dart';
@@ -14,6 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttericon/octicons_icons.dart';
 import 'package:psikoz_me/core/init/service/AuthService.dart';
 import 'package:psikoz_me/core/init/service/statusService.dart';
+import 'package:psikoz_me/core/theme/color_theme.dart';
 
 // tamamlanmıştır bazı ufak tefek değişiklikler yapılacaktır
 class CardPost extends StatelessWidget {
@@ -30,11 +34,14 @@ class CardPost extends StatelessWidget {
       required this.UserUid,
       required this.likes,
       required this.Saves,
-      required this.uid})
+      required this.uid,
+      required this.onTap,
+      required this.degree,
+      required this.onMessage})
       : super(key: key);
 
   String title;
-  String time;
+  dynamic time;
   String username;
   String MediaUrl;
   Function()? OnLong;
@@ -45,118 +52,169 @@ class CardPost extends StatelessWidget {
   List likes;
   List Saves;
   var uid;
+  var degree;
+  void Function()? onTap;
+  void Function()? onMessage;
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(HomeController());
+    var controller = Get.find<HomeController>();
     var controller3 = Get.find<StatusService>();
     var controller2 = Get.find<AuthService>();
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5.0),
+      padding: const EdgeInsets.only(bottom: 5, left: 1, right: 1),
       child: Container(
-          width: Get.width * 0.7,
+      
           decoration: BoxDecoration(
-            boxShadow: const [
-              BoxShadow(spreadRadius: 0.4, blurRadius: 1, color: Colors.white),
-            ],
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.white38,
-          ),
+              borderRadius: BorderRadius.circular(10),
+              color: Get.isDarkMode?const Color.fromARGB(255, 0, 0, 0):Colors.white,
+              boxShadow: [
+                Get.isDarkMode
+                    ? ShadowConstants.boxShadow
+                    : ShadowConstants.boxShadowDark
+              ] ),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          height: 50,
-                          width: 50,
-                          child: username.contains("Psikoz")
-                              ? CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  child: SvgPicture.asset(
-                                    Login_Constants.LOGO_IMAGE2_SVG,
-                                  ))
-                              : CircleAvatar(
-                                  backgroundImage: profileUrl == " "
-                                      ? const NetworkImage(
-                                          "https://picsum.photos/200")
-                                      : NetworkImage(profileUrl)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(username,
-                                  style: Login_Constants.POPPINS_STYLE,),
-                              Text(
-                                time,
-                                style: Login_Constants.POPPINS_STYLE
-                                    .copyWith(color: Colors.grey,fontSize: 11),
-                              ),
-                            ],
+                InkWell(
+                  onTap: username.contains("Psikoz") ? null : onTap,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: username.contains("Psikoz")
+                                ? CircleAvatar(
+                                    backgroundColor: ThemeConstant.logoMode,
+                                    child: SvgPicture.asset(
+                                      LoginConstants.LOGO_IMAGE2_SVG,
+                                      color: ThemeConstant.textField
+                                    ))
+                                : CircleAvatar(
+                                    backgroundImage: profileUrl == " "
+                                        ? const NetworkImage(
+                                            "https://picsum.photos/200")
+                                        : NetworkImage(profileUrl)),
                           ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    LikeButton(
-                        isLiked: Saves.contains(UserUid) ? true : false,
-                        onTap: (isLiked) async {
-                          await controller3.takeAndRemoveSave(
-                              postId, Saves, UserUid);
-                          return null;
-                        },
-                        likeBuilder: (isLiked) {
-                          return Saves.contains(UserUid)
-                              ? Icon(
-                                  Octicons.saved,
-                                  color: BottomBar_Constant.COLORGREENKA,
-                                  size: 18,
-                                )
-                              : const Icon(
-                                  Octicons.unsaved,
-                                  color: Colors.grey,
-                                  size: 18,
-                                );
-                        }),
-                    IconButton(
-                        onPressed: () {
-                          Get.defaultDialog(barrierDismissible: true,title: "Daha Fazlası",titleStyle: Login_Constants.NUNITOTEXT_STYLE.copyWith(fontSize: 14),
-                              content: Column(children: [
-                            uid == controller2.auth.currentUser!.uid
-                                ? ListTile(
-                                    onTap: () => controller3
-                                            .deleteData(postId)
-                                            .then((value) {
-                                          Get.back();
-                                          Get.snackbar(
-                                              "Silindi", "Postunuz Silindi",
-                                              backgroundColor: Colors.red,
-                                              snackPosition:
-                                                  SnackPosition.BOTTOM);
-                                        }),
-                                    trailing: const Icon(
-                                      Icons.delete,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      username,
+                                      style: LoginConstants.POPPINS_STYLE,
                                     ),
-                                    title: Text("Dökümanı Siliniz",style: Login_Constants.NUNITOTEXT_STYLE.copyWith(fontSize: 14), ))
-                                : const Text("data")
-                          ]));
-                        },
-                        icon: const Icon(Icons.more_horiz_rounded))
-                  ],
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    username.contains("Psikoz")
+                                        ? const SizedBox()
+                                        : Text(
+                                            degree,
+                                            style: LoginConstants.POPPINS_STYLE
+                                                .copyWith(
+                                                    color: Colors.grey,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: 12),
+                                          ),
+                                  ],
+                                ),
+                                Text(
+                                  time.toString(),
+                                  style: LoginConstants.POPPINS_STYLE.copyWith(
+                                      color: Colors.grey, fontSize: 11),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      LikeButton(
+                          isLiked: Saves.contains(UserUid) ? true : false,
+                          onTap: (isLiked) async {
+                            await controller3.takeAndRemoveSave(
+                                postId, Saves, UserUid);
+                            return null;
+                          },
+                          likeBuilder: (isLiked) {
+                            return Saves.contains(UserUid)
+                                ? Icon(
+                                    Octicons.saved,
+                                    color: ColorPallete.PURPLECOLOR,
+                                    size: 18,
+                                  )
+                                :  Icon(
+                                    Octicons.unsaved,
+                                    color: ThemeConstant.textFieldEnabeld,
+                                    size: 18,
+                                  );
+                          }),
+                      IconButton(
+                          onPressed: () {
+                            Get.defaultDialog(
+                                barrierDismissible: true,
+                                title: "Daha Fazlası",
+                                titleStyle: LoginConstants.NUNITOTEXT_STYLE
+                                    .copyWith(fontSize: 14),
+                                content: Column(children: [
+                                  uid == controller2.auth.currentUser!.uid
+                                      ? ListTile(
+                                          onTap: () => controller3
+                                                  .deleteData(postId)
+                                                  .then((value) {
+                                                Get.back();
+                                                Get.snackbar("Silindi",
+                                                    "Postunuz Silindi",
+                                                    backgroundColor: Colors.red,
+                                                    snackPosition:
+                                                        SnackPosition.BOTTOM);
+                                              }),
+                                          trailing: const Icon(
+                                            Icons.delete,
+                                          ),
+                                          title: Text(
+                                            "Dökümanı Siliniz",
+                                            style: LoginConstants
+                                                .NUNITOTEXT_STYLE
+                                                .copyWith(fontSize: 14),
+                                          ))
+                                      : const Text(""),
+                                  controller.profileModel.first.degree ==
+                                          "PsikoExpa"
+                                      ? ListTile(
+                                          title: Text("Bir Mesaj Gönderin"),
+                                          onTap: onMessage,
+                                        )
+                                      : Text("")
+                                ]));
+                          },
+                          icon: const Icon(
+                            Icons.more_horiz_rounded,
+                            color: Colors.grey,
+                          ))
+                    ],
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: Text(
-                    title,style: Login_Constants.POPPINS_STYLE.copyWith(color: Colors.grey.shade900,fontSize: 11,fontWeight: FontWeight.normal),
+                    title,
+                    style: LoginConstants.POPPINS_STYLE.copyWith(
+                        color: ThemeConstant.textField,
+                        fontSize: 11,
+                        fontWeight: FontWeight.normal),
                     softWrap: true,
                   ),
                 ),
@@ -187,7 +245,7 @@ class CardPost extends StatelessWidget {
                           return likes.contains(UserUid)
                               ? Icon(
                                   Icons.favorite,
-                                  color: BottomBar_Constant.COLORBLUEKA,
+                                  color: ColorPallete.BLUECOLOR,
                                   size: 25,
                                 )
                               : const Icon(
@@ -202,7 +260,8 @@ class CardPost extends StatelessWidget {
                               CommentSheet(
                                 snap: postId,
                               ),
-                              isScrollControlled: true);
+                              isScrollControlled:
+                                  true); // isScroll kontrolü widgetın sizeını bizim ayarlamamıza yardımcı oluyor
                         },
                         icon: const Icon(
                           MfgLabs.comment,
@@ -212,12 +271,16 @@ class CardPost extends StatelessWidget {
                     const Spacer(),
                     Row(
                       children: [
-                        Text(tag,style: Login_Constants.POPPINS_STYLE.copyWith(fontSize: 10,color: Colors.black45),),
+                        Text(
+                          tag,
+                          style: LoginConstants.POPPINS_STYLE
+                              .copyWith(fontSize: 10, color: ThemeConstant.textField),
+                        ),
                         const SizedBox(width: 3),
-                        const Icon(
+                        Icon(
                           Elusive.tag,
                           size: 15,
-                          color: Colors.black87,
+                          color: ColorPallete.SEARCHCOLOR,
                         ),
                       ],
                     )

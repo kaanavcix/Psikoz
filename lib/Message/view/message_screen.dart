@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/Message/controller/messageScreen.dart';
+import 'package:psikoz_me/Message/view/findMessage.dart';
 import 'package:psikoz_me/Message/view/message_Detail.dart';
 import 'package:psikoz_me/Message/view/model/profile.dart';
-import 'package:psikoz_me/core/constants/bottombar_constant.dart';
+import 'package:psikoz_me/core/constants/ColorPallette.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:psikoz_me/core/constants/message_constant.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
-import 'package:psikoz_me/core/constants/search_constants.dart';
 import 'package:fluttericon/typicons_icons.dart';
 import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:psikoz_me/core/init/service/AuthService.dart';
@@ -27,61 +27,63 @@ class MessageScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        shadowColor: BottomBar_Constant.COLORBLUEKA,
+        shadowColor: ColorPallete.BLUECOLOR,
         toolbarHeight: Get.height * 0.12,
-        elevation: 2,
-        backgroundColor: Search_Constant.COLORBLUEKA,
+        elevation: 0,
+        backgroundColor: ColorPallete.BLUECOLOR,
         flexibleSpace: FlexibleSpaceBar(
             background: Container(
-                color: BottomBar_Constant.COLORBLUEKA,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: Search_Constant.COLORBLUEKA,
-                      backgroundImage: controller2.profileModel.first.image !=
-                              ""
-                          ? NetworkImage(controller2.profileModel.first.image)
-                          : const NetworkImage("https://picsum.photos/200"),
-                    ),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          MessageConstants.HOSGELDINIZ,
-                          style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK,
-                        ),
-                        Text(controller2.profileModel.first.username,
-                            style: Login_Constants.NUNITOTEXT_STYLE_W700
-                                .copyWith(
-                                    fontWeight: FontWeight.bold, fontSize: 20)),
-                      ],
-                    ),
-                    const Spacer(),
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Typicons.cog,
-                          size: 25,
-                        ))
-                  ],
+                color: ColorPallete.BLUECOLOR,
+                child: SafeArea(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundColor: ColorPallete.PURPLECOLOR,
+                        backgroundImage: controller2.profileModel.first.image !=
+                                ""
+                            ? NetworkImage(controller2.profileModel.first.image)
+                            : const NetworkImage("https://picsum.photos/200"),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            MessageConstants.HOSGELDINIZ,
+                            style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK,
+                          ),
+                          Text(controller2.profileModel.first.username,
+                              style: LoginConstants.NUNITOTEXT_STYLE_W700
+                                  .copyWith(
+                                      fontWeight: FontWeight.bold, fontSize: 20)),
+                        ],
+                      ),
+                      const Spacer(),
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Typicons.cog,
+                            size: 25,
+                          ))
+                    ],
+                  ),
                 ))),
       ),
       body: Obx((() => ListView.builder(
+        physics: BouncingScrollPhysics(),
             itemCount: controller7.chat.length,
             itemBuilder: (context, index) {
               return listTile(controller3, index, controller, controller7);
             },
-           
           ))),
       floatingActionButton: newMesageFAB(),
     );
@@ -89,33 +91,40 @@ class MessageScreen extends StatelessWidget {
 
   Widget listTile(MessageSreenController controller3, int index,
       AuthService controller, ChatService controller6) {
-    return Card(
-      child: Dismissible(
-        background: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                ),
-              ],
-            ),
-            color: Colors.red),
-        key: ValueKey(controller6.chat[index]),
-        onDismissed: (DismissDirection dismissDirection) =>
-            controller.deleteChat(controller6.chat[index].docId),
-        child: ListTile(
-          leading: CircleAvatar(
-              backgroundImage:
-                  NetworkImage(controller6.chat[index].profileImage),radius: 23),
-          title: Text(controller6.chat[index].name,style: MessageConstants.USERTITLE.copyWith(fontWeight: FontWeight.w500)),
-          onTap: () => Get.to(
-              CheatDetail(
-                  chatModel: controller6.chat[index],
-                  userId: controller.auth.currentUser!.uid),
-              arguments: controller6.chat[index]),
+    return Dismissible(
+      background: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const [
+              Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ],
+          ),
+          color: Colors.red),
+      key: ValueKey(controller6.chat[index]),
+      onDismissed: (DismissDirection dismissDirection) =>
+          controller.deleteChat(controller6.chat[index].docId),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 3.0),
+        child: Container(
+          decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Colors.grey,width: 0.4))),
+          child: ListTile(
+            leading: CircleAvatar(
+                backgroundImage:
+                    NetworkImage(controller6.chat[index].profileImage),
+                radius: 23),
+            title: Text(controller6.chat[index].name,
+                style: MessageConstants.USERTITLE
+                    .copyWith(fontWeight: FontWeight.w500)),
+            onTap: () => Get.to(
+                CheatDetail(
+                    chatModel: controller6.chat[index],
+                    userId: controller.auth.currentUser!.uid),
+                arguments: controller6.chat[index]),
+          ),
         ),
       ),
     );
@@ -124,12 +133,9 @@ class MessageScreen extends StatelessWidget {
   FloatingActionButton newMesageFAB() {
     return FloatingActionButton(
       onPressed: () {
-        Get.bottomSheet(
-          bottomSheetPage(),
-          isScrollControlled: true,
-        );
+        Get.to(()=> SearchMessage());
       },
-      backgroundColor: BottomBar_Constant.COLORBLUEKA,
+      backgroundColor: ColorPallete.BLUECOLOR,
       child: const Icon(FontAwesome.wechat),
     );
   }
@@ -183,7 +189,7 @@ class MessageScreen extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(child:  futureBuild(controller2, controller, authcontrol))
+          Expanded(child: futureBuild(controller2, controller, authcontrol))
         ]));
   }
 

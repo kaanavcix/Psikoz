@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:psikoz_me/Home/Controller/homeController.dart';
-import 'package:psikoz_me/core/constants/addPost_constant.dart';
-import 'package:psikoz_me/core/constants/bottombar_constant.dart';
+import 'package:psikoz_me/core/components/ThemeConstant.dart';
+import 'package:psikoz_me/core/constants/CommonTextConstant.dart';
+import 'package:psikoz_me/core/constants/colorpallette.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
 import 'package:psikoz_me/newPost/controller/newpost_controller.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,7 @@ class PostIngerident extends StatelessWidget {
     return Padding(
           padding: const EdgeInsets.symmetric(horizontal:5.0),
           child: Container(
+           
             width: Get.width,
             child: Padding(
               padding: const EdgeInsets.all(2.0),
@@ -36,46 +38,43 @@ class PostIngerident extends StatelessWidget {
                           flex: 1,
                           child: CircleAvatar(
                             radius: 18,
-                            backgroundColor: BottomBar_Constant.COLORBLUEKA,
+                            backgroundColor: ColorPallete.BLUECOLOR,
                             backgroundImage: controller4.profileModel.first.image !=
                                     " "
                                 ? NetworkImage(controller4.profileModel.first.image)
-                                : const NetworkImage("https://picsum.photos/200"),
+                                : const NetworkImage("https://picsum.photos/200"),// şura-ya bir ayar çekelim
                           ),
                         ),
-                        const SizedBox(
+                        const SizedBox( // bakalım
                           width: 40,
                         ),
                         Expanded(
                           flex: 5,
                           child: Obx(() => SwitchListTile(
-                                activeColor: BottomBar_Constant.COLORBLUEKA,
+                            inactiveThumbColor: ColorPallete.PURPLECOLOR,
+                                activeColor: ColorPallete.BLUECOLOR,
                                 value: controller.switchValue.value,
                                 onChanged: (value) {
                                   controller.switchValue.value = value;
                                 },
                                 title: Text(
-                                  AddPostConstant.ANONIMTEXT,
-                                  style: Login_Constants.NUNITOTEXT_STYLE_W700
+                                  CommonTextConstants.ADDANONIMTEXT,
+                                  style: LoginConstants.NUNITOTEXT_STYLE_W700
                                       .copyWith(
-                                          fontSize: 10, color: Colors.black),
+                                          fontSize: 10, color: Get.isDarkMode?Colors.white:Colors.black),
                                 ),
                               )),
                         ),
                       ],
                     ),
-                   textField(maxLength: 500,maxLines: 3,minLines: 2,),
+                   PostTextField(maxLength: 500,maxLines: 3,minLines: 2,),
                   ]),
             ),
-            decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Color.fromARGB(255, 212, 210, 210),
-                      blurRadius: 1,
-                      spreadRadius: 1)
-                ],
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+                border: Border.all(width: 0.5,color: Colors.black26),
+                color: Get.isDarkMode?Colors.black54:Colors.
+                white54,
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     bottomLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),

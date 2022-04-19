@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:psikoz_me/Home/View/image_zoomout.dart';
 import 'package:psikoz_me/Search/controller/searchController.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:psikoz_me/Search/view/searchProfile.dart';
 import 'package:psikoz_me/core/components/card/post_card.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
+import 'package:psikoz_me/core/init/service/chatService.dart';
 import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class SearchDetail extends StatelessWidget {
@@ -27,7 +29,7 @@ class SearchDetail extends StatelessWidget {
               controller.physcologyObject[Data].imageAsset,
             ),
             title: Text(controller.physcologyObject[Data].name,
-                style: Login_Constants.NUNITOTEXT_STYLE_BOLD
+                style: LoginConstants.NUNITOTEXT_STYLE_BOLD
                     .copyWith(color: Colors.black)),
           ),
         ),
@@ -39,7 +41,7 @@ class SearchDetail extends StatelessWidget {
   SliverList sliverList(int data) {
     var controller = Get.find<StatusService>();
     var controller5 = Get.find<SearchController>();
-
+   var messageController = Get.find<ChatService>();
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
@@ -47,6 +49,9 @@ class SearchDetail extends StatelessWidget {
                   controller5.physcologyObject[data].name)
               ? Obx(
                 ()=> CardPost(
+                  onMessage: ()=> messageController.startConversations(messageController.ilterProfiles(controller.post4[index].uid)),
+                  degree: controller.post4[index].degree,
+                  onTap: () => Get.to(SearchProfile(),arguments: controller.post4[index].uid,),
                     OnLong: () => Get.to(const ImageZoomOut(),
                         arguments: controller.post4[index].image),
                     username: controller.post4[index].username,

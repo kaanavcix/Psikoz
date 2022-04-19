@@ -1,7 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:psikoz_me/core/constants/search_constants.dart';
+import 'package:psikoz_me/core/constants/ColorPallette.dart';
+
 
 class LinearGradientBackground extends StatelessWidget {
   const LinearGradientBackground({
@@ -15,7 +16,7 @@ class LinearGradientBackground extends StatelessWidget {
       child: widget,
         decoration: BoxDecoration(
             gradient: LinearGradient(
-                colors: Search_Constant.LINEARGRADIENT_COLOR,
+                colors: ColorPallete.LINEARGRADIENT_COLOR,
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter)
                 ));

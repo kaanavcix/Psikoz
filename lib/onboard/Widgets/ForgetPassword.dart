@@ -12,11 +12,11 @@ class ForgetPassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
         style: ElevatedButton.styleFrom(
-          textStyle: Login_Constants.NUNITOTEXT_JUST_TEXTSIZE,
+          textStyle: LoginConstants.NUNITOTEXT_JUST_TEXTSIZE,
           onPrimary: Colors.grey.withOpacity(0.4),
         ),
         onPressed: onPressed,
-        child: Text(Login_Constants.FORGET_PASSWORD_TEXT));
+        child: Text(LoginConstants.FORGET_PASSWORD_TEXT));
   }
 }
 

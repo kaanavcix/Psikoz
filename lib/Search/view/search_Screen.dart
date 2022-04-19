@@ -1,13 +1,12 @@
 // ignore_for_file: camel_case_types, file_names
 
 import 'package:flutter/material.dart';
-
 import 'package:psikoz_me/Search/controller/searchController.dart';
 import 'package:psikoz_me/Search/view/SearchDetail.dart';
 import 'package:psikoz_me/Search/view/searchProfile.dart';
-import 'package:psikoz_me/core/constants/bottombar_constant.dart';
+import 'package:psikoz_me/core/components/ThemeConstant.dart';
+import 'package:psikoz_me/core/constants/ColorPallette.dart';
 import 'package:psikoz_me/core/constants/login_constant.dart';
-import 'package:psikoz_me/core/constants/search_constants.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,45 +35,34 @@ class _SearchScreenState extends State<SearchScreen> {
     return PreferredSize(
       preferredSize: const Size.fromHeight(80.0),
       child: AppBar(
-        backgroundColor: BottomBar_Constant.COLORBLUEKA,
+        backgroundColor: ColorPallete.BLUECOLOR,
         flexibleSpace: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: Search_Constant.LINEARGRADIENT_COLOR))),
+                    colors: ColorPallete.LINEARGRADIENT_COLOR))),
         title: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20), color: Colors.white),
+              borderRadius: BorderRadius.circular(20), color: Get.isDarkMode?ColorPallete.SEARCHCOLOR:Colors.white54),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Form(
-              child: TextFormField(
-                controller: controller2.searchControl,
-                decoration: const InputDecoration(
-                    disabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                      width: 0,
-                      color: Colors.transparent,
-                    )),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.transparent),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent)),
-                    border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                      width: 0,
-                      color: Colors.transparent,
-                    )),
-                    labelStyle: TextStyle(fontSize: 12),
-                    labelText: "Arama"),
-                onChanged: (String _) {
-                  debugPrint(_);
+            child: TextFormField(
+              style: TextStyle(color: ThemeConstant.textField),
+              cursorColor: ColorPallete.BLUECOLOR,
+              controller: controller2.searchControl,
+              decoration: InputDecoration(border: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              
+                  labelText: "Arama",
+                  labelStyle: Get.theme.textTheme.bodyMedium!.copyWith(color: ThemeConstant.textField)),
+              onChanged: (String _) {
+                debugPrint(_);
 
-                  setState(() {
-                    
-                  });
-                },
-              ),
+                setState(() {
+                  
+                });
+              },
             ),
           ),
         ),
@@ -133,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                        width: 0.3, color: BottomBar_Constant.COLORBLUEKA)),
+                        width: 0.3, color: ColorPallete.BLUECOLOR)),
                 child: Stack(
                   children: [
                     Container(
@@ -151,7 +139,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         top: Get.height * 0.14,
                         left: Get.width * 0.02,
                         child: Text(controller2.physcologyObject[index].name,
-                            style: Login_Constants.NUNITOTEXT_STYLE_BOLD
+                            style: LoginConstants.NUNITOTEXT_STYLE_BOLD
                                 .copyWith(
                                     fontSize: 9,
                                     color: Colors.white,

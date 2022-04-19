@@ -1,13 +1,18 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:psikoz_me/Home/Controller/homeController.dart';
 import 'package:psikoz_me/Home/View/Natificounts.dart';
 import 'package:psikoz_me/Home/View/image_zoomout.dart';
 import 'package:psikoz_me/Home/widgets/listView.dart';
 import 'package:psikoz_me/Home/widgets/trendContainer.dart';
+import 'package:psikoz_me/Search/view/searchProfile.dart';
+import 'package:psikoz_me/core/components/ThemeConstant.dart';
 import 'package:psikoz_me/core/components/card/post_card.dart';
 import 'package:get/get.dart';
-import 'package:psikoz_me/core/constants/Homeconstants.dart';
+import 'package:psikoz_me/core/constants/CommonTextConstant.dart';
+import 'package:psikoz_me/core/constants/TextThemeConstants.dart';
+import 'package:psikoz_me/core/init/service/chatService.dart';
 import 'package:psikoz_me/core/init/service/statusService.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,39 +20,44 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(HomeController());
     return Scaffold(
         body: CustomScrollView(
       physics: const BouncingScrollPhysics(),
-      shrinkWrap: true,
-      slivers: [sliverBar(), /* sliverBox() */ Obx(() => sliverList())],
+      slivers: [sliverBar(), sliverList()],
     ));
   }
 
-  SliverList sliverList() {
+  Widget sliverList() {
     var controller = Get.find<StatusService>();
-
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          var data =controller.post4[index];
-          return CardPost(
-            
-            OnLong: () => Get.to(const ImageZoomOut(),
-                arguments: data.image),
-            username: data.username,
-            title: data.PostText,
-            time: data.time,
-            MediaUrl: data.image,
-            profileUrl: data.profileurl,
-            tag: data.tag,
-            likes: data.likes,
-            UserUid: controller.autService.auth.currentUser!.uid,
-            postId: data.DocId,
-            Saves: data.saves,
-            uid: data.uid ,
-          );
-        },
-        childCount: controller.post4.length,
+    var messageController = Get.find<ChatService>();
+    return Obx(
+      () => SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            var data = controller.post4[index];
+            return CardPost(
+                degree: data.degree,
+                onTap: () => Get.to(const SearchProfile(), arguments: data.uid),
+                OnLong: () =>
+                    Get.to(const ImageZoomOut(), arguments: data.image),
+                username: data.username,
+                title: data.PostText,
+                time: data.time,
+                MediaUrl: data.image,
+                profileUrl: data.profileurl,
+                tag: data.tag,
+                likes: data.likes,
+                UserUid: controller.autService.auth.currentUser!.uid,
+                postId: data.DocId,
+                Saves: data.saves,
+                uid: data.uid,
+                onMessage: () async =>
+                    await messageController.startConversations(
+                        messageController.ilterProfiles(data.uid)));
+          },
+          childCount: controller.post4.length,
+        ),
       ),
     );
   }
@@ -63,9 +73,9 @@ class HomeScreen extends StatelessWidget {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children:const [
+                children: const [
                   TrendContainer(),
-                   ListViewWidget(),
+                  ListViewWidget(),
                 ],
               ),
             ),
@@ -79,25 +89,25 @@ class HomeScreen extends StatelessWidget {
     return SliverAppBar(
       elevation: 2,
       expandedHeight: 30,
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+     
       floating: true,
       actions: [
         IconButton(
             onPressed: () {
               Get.to(const NatiScreen());
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.notifications,
-              color: Colors.black,
+              
+              color: Get.isDarkMode?Colors.white:Colors.black,
             ))
       ],
       snap: false,
       centerTitle: true,
       title: Text(
-        HomeConstant.APP_NAME,
-        style: HomeConstant.NAMESTYLE,
+        CommonTextConstants.ANONIM,
+        style: TextThemeConstants.NAMESTYLE,
       ),
     );
   }
 }
-

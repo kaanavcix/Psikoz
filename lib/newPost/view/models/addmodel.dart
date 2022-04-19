@@ -1,17 +1,19 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:psikoz_me/Message/view/model/profile.dart';
 
 class Post2 {
   final String DocId;
   final String PostText;
   final String image;
   final String username;
-  final String time;
+  final dynamic time;
   final String profileurl;
   final String tag;
   final int likeCounter;
   final dynamic likes;
+  final String degree;
   final dynamic saves;
   final dynamic uid;
 
@@ -24,9 +26,12 @@ class Post2 {
       required this.profileurl,
       required this.tag,
       required this.likeCounter,
-      required this.likes, required this.saves,this.uid});
+      required this.likes,
+      required this.saves,
+      required this.degree,
+      this.uid});
 
-  factory Post2.fromMap(DocumentSnapshot data,) {
+  factory Post2.fromMap(DocumentSnapshot data) {
     return Post2(
         DocId: data.id,
         PostText: data["PostText"],
@@ -37,7 +42,8 @@ class Post2 {
         tag: data["tag"],
         likeCounter: data["likeCounter"],
         likes: data["likes"],
-        saves: data["Save"],uid: data["uid"]);
+        saves: data["Save"],
+        uid: data["uid"],degree: data["degree"]??"");
   }
 }
 
@@ -46,15 +52,15 @@ class Post3 {
   final String PostText;
   final String image;
   final String username;
-  final String time;
+  final dynamic time;
   final String profileurl;
   final String tag;
   final int likeCounter;
   final dynamic likes;
-    final dynamic saves;
-      final dynamic uid;
-
-
+  final dynamic saves;
+  final dynamic uid;
+   final String degree;
+  
 
   Post3(
       {required this.DocId,
@@ -65,8 +71,9 @@ class Post3 {
       required this.profileurl,
       required this.tag,
       required this.likeCounter,
-      required this.likes
-      ,required this.saves,this.uid});
+      required this.likes,
+      required this.saves,required this.degree,
+      this.uid});
 
   factory Post3.fromMap(DocumentSnapshot data) {
     return Post3(
@@ -78,7 +85,8 @@ class Post3 {
         profileurl: data["profileurl"],
         tag: data["tag"],
         likeCounter: data["likeCounter"],
-        likes: data["likes"]
-        ,saves: data["Save"],uid: data["uid"]);
+        likes: data["likes"],
+        saves: data["Save"],
+        uid: data["uid"],degree: data["degree"]??"");
   }
 }

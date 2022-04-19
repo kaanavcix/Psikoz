@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:psikoz_me/Main/controller/bottomnavi_controller.dart';
-import 'package:psikoz_me/core/components/bottom_navigation/bottom_navigation.dart';
+import 'package:psikoz_me/core/components/BottomNavigationBar.dart';
 import 'package:get/get.dart';
+import 'package:psikoz_me/core/components/bottomnaav.dart';
+import 'package:psikoz_me/core/constants/ColorPallette.dart';
 import 'package:psikoz_me/core/init/routes/pages.dart';
 
 class MainPage extends StatelessWidget {
@@ -9,14 +11,13 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BottomNavigatiorController controller =
-        Get.put(BottomNavigatiorController());
-    return Scaffold(
-      body: Obx(() => tumPages[controller.selectedItemPosition.value],),
-          bottomNavigationBar: Obx(() => SnakeBottomNavigationBar(
-                selectedIndex: controller.selectedItemPosition.value,
-                onTap: (p0) => controller.selectedItemPosition.value = p0,
-              )))
-    ;
+    Get.put(BottomNavigatiorController());
+    return GetBuilder<BottomNavigatiorController>(
+        builder: ((_) => Scaffold(
+            body: tumPages[_.selectedItemPosition.value],
+            bottomNavigationBar: PsikozBottomNavigationBar(
+              currentIndex: _.selectedItemPosition.value,
+              controller: _,
+            ))));
   }
 }
