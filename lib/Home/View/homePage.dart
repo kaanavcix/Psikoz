@@ -10,6 +10,7 @@ import 'package:psikoz_me/Search/view/searchProfile.dart';
 import 'package:psikoz_me/core/components/ThemeConstant.dart';
 import 'package:psikoz_me/core/components/card/post_card.dart';
 import 'package:get/get.dart';
+import 'package:psikoz_me/core/components/vertical_listview.dart';
 import 'package:psikoz_me/core/constants/CommonTextConstant.dart';
 import 'package:psikoz_me/core/constants/TextThemeConstants.dart';
 import 'package:psikoz_me/core/init/service/chatService.dart';
@@ -20,12 +21,15 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomeController());
+     Get.put(HomeController());
     return Scaffold(
-        body: CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [sliverBar(), sliverList()],
-    ));
+        body: GetBuilder<HomeController>(
+          
+          builder: (controller) =>  CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [sliverBar(),sliverBox(controller), sliverList()],
+            ),
+        ));
   }
 
   Widget sliverList() {
@@ -62,26 +66,10 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  SliverToBoxAdapter sliverBox() {
+  SliverToBoxAdapter sliverBox(HomeController controller) {
     return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          height: 40,
-          child: Container(
-            color: Colors.white,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: const [
-                  TrendContainer(),
-                  ListViewWidget(),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      child: VerticalListview(controller: controller,),
+      
     );
   }
 

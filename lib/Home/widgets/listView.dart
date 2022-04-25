@@ -18,12 +18,12 @@ class ListViewWidget extends StatelessWidget {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
-      itemCount: controller.PHYSCOLOGYOBJECTNAME.length,
+      itemCount: Variable.PHYSCOLOGYOBJECTNAME.length,
       itemBuilder: (BuildContext context, int index) {
         return GestureDetector(
           onTap: () {
             controller2.selectedTag.value =
-                controller.PHYSCOLOGYOBJECTNAME[index];
+                Variable.PHYSCOLOGYOBJECTNAME[index];
             controller2.data = index;
           },
           child: Padding(
@@ -40,7 +40,7 @@ class ListViewWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  controller.PHYSCOLOGYOBJECTNAME[index],
+                  Variable.PHYSCOLOGYOBJECTNAME[index],
                   style: const TextStyle(color: Colors.black, fontSize: 14),
                 ),
               ),

@@ -12,7 +12,7 @@ class HomeController extends GetxController {
   var data = 0;
   TextEditingController commentControl = TextEditingController();
   var isSave = false.obs;
-
+  var tabIndex = 0.obs; 
   RxList<ProfileModel2> profileModel = RxList<ProfileModel2>();
 
   @override
@@ -20,10 +20,8 @@ class HomeController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     profileModel.bindStream(controller.getCurrentData());
-    
-    
   }
- 
+
   @override
   void onReady() {
     // TODO: implement onReady

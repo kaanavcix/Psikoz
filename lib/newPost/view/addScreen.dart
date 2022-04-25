@@ -34,7 +34,7 @@ class AddScreen extends StatelessWidget {
     String generate = random.toString();
     var anonmyName = "${CommonTextConstants.ANONIM}$generate";
     return Scaffold(
-      backgroundColor: Colors.white38,
+      //backgroundColor: Colors.white38,
       resizeToAvoidBottomInset: true,
       body:  SafeArea(
         child: Column(
@@ -101,7 +101,7 @@ class AddScreen extends StatelessWidget {
                                       ),
                                       onChanged: (String? value) =>
                                           controller.setSelected(value!),
-                                      items: controller5.PHYSCOLOGYOBJECTNAME
+                                      items: Variable.PHYSCOLOGYOBJECTNAME
                                           .map<DropdownMenuItem<String>>(
                                               (String value) {
                                         return DropdownMenuItem(

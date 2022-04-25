@@ -12,7 +12,7 @@ class PhyscologyObject extends GetxController {
 }
 
 class Variable extends GetxController {
-  List<String> PHYSCOLOGYOBJECTNAME = [
+  static List<String> PHYSCOLOGYOBJECTNAME = [
     "Depresyon Dönemleri",
     "Anksiyete Bozukluğu",
     "Bipolar Bozuklukları",

@@ -35,7 +35,7 @@ class SearchController extends GetxController {
   List<PhyscologyObject> ListOlusturucu() {
     List<PhyscologyObject> geciciObject = [];
     for (var i = 0; i < 9; i++) {
-      var Name = controller.PHYSCOLOGYOBJECTNAME[i];
+      var Name = Variable.PHYSCOLOGYOBJECTNAME[i];
       var Asset = controller.AssetImage[i];
       PhyscologyObject object = PhyscologyObject(name: Name, imageAsset: Asset);
       geciciObject.add(object);

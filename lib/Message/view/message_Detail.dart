@@ -6,6 +6,7 @@ import 'package:psikoz_me/Home/View/homePage.dart';
 import 'package:psikoz_me/Message/controller/messageController.dart';
 
 import 'package:psikoz_me/Message/view/model/chatModel.dart';
+import 'package:psikoz_me/core/components/ThemeConstant.dart';
 import 'package:psikoz_me/core/constants/ColorPallette.dart';
 import 'package:psikoz_me/core/constants/profile_constans.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -32,7 +33,7 @@ class _CheatDetailState extends State<CheatDetail> {
     super.initState();
     _ref = controller.firestore
         .collection("Chat/${widget.chatModel.docId}/messages");
-    debugPrint(widget.chatModel.docId.toString());
+    //debugPrint(widget.chatModel.docId.toString());
   }
 
   @override
@@ -41,8 +42,8 @@ class _CheatDetailState extends State<CheatDetail> {
         appBar: AppBar(
           toolbarHeight: Get.height * 0.15,
           elevation: 8,
-          backgroundColor: const Color.fromRGBO(247, 248, 251, 1.0),
-          foregroundColor: const Color.fromRGBO(221, 225, 235, 1.0),
+          backgroundColor: ThemeConstant.logoMode,
+         
           title: Row(children: [
             CircleAvatar(
               backgroundImage: NetworkImage(widget.chatModel.profileImage),
@@ -53,29 +54,9 @@ class _CheatDetailState extends State<CheatDetail> {
             ),
             Text(
               widget.chatModel.name,
-              style: ProfileConstants.NUNITOTEXT_STYLE_W700_BLACK,
+              style: TextStyle(color:ThemeConstant.mode)
             ),
             const Spacer(),
-            /* Container(
-                width: 50,
-                height: 50,
-                child: Stack(
-                  children: [
-                    SvgPicture.asset(
-                      MessageConstants.PICTURESVG,
-                    ),
-                    Positioned(
-                        left: 24,
-                        top: 12,
-                        child: Transform.rotate(
-                          angle: -180 / 33,
-                          child: Icon(
-                            FontAwesome5.phone_alt,
-                            size: 20,
-                          ),
-                        )),
-                  ],
-                )) */
           ]),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -144,40 +125,28 @@ class _CheatDetailState extends State<CheatDetail> {
                       child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: Colors.white,
+                            color: Colors.white30,
                           ),
                           child: Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 15.0),
                             child: TextField(
                                 controller: controller2.editingController,
-                                cursorColor: Colors.white,
+                                cursorColor: ColorPallete.BLUECOLOR,
                                 decoration: const InputDecoration(
                                     hintText: "Please Write Here :::..",
-                                    disabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                      borderSide: BorderSide(
-                                          width: 1, color: Colors.black),
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.white),
-                                    ),
-                                    focusedBorder: UnderlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white)),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                      width: 5,
-                                      color: Colors.black,
-                                    )))),
+                                    disabledBorder: InputBorder.none
+                                    ,
+                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    border: InputBorder.none
+                                    ))
                           ))),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: InkWell(
                         onTap: () async {
-                          debugPrint(widget.chatModel.docId.toString());
+                          //debugPrint(widget.chatModel.docId.toString());
                          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()));
                           await controller.firestore
                               .collection(
